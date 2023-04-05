@@ -16,7 +16,6 @@ import java.io.StringWriter;
  */
 public class Dialog {
 
-
   /**
    * Show a modal info box
    *
