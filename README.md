@@ -29,7 +29,12 @@ Tomislav Zecevic
 
 ## Roadmap
 
-- 
+- [ ] Datenbank + Tasks (hinzufügen, editieren, löschen)
+- [ ] APP (Windows) - GUI (Auflisten Tasks), Erstellung Layout ("Scene Builder JavaFX")
+- [ ] Coins System
+- [ ] Tasks kategorisieren, suchen, filtern, beenden/fertigstellen, deadlines (verbleibende Zeit anzeigen), priorisierung
+- [ ] Design Anpassungen: ==**Gamification**==
 
-## Externe Quellen
+## Externe Bibliotheken
+
 
