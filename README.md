@@ -16,16 +16,16 @@ Tomislav Zecevic
 
 ## Funktionsumfang
 
-- [] Tasks hinzufügen
-- [] Ansehen aller Tasks
-- [] Tasks können terminiert werden ( Deadline, verbleibende Zeit)
-- [] Tasks können beendet/ fertiggestellt werden
-- [] Tasks können gelöscht werden
-- [] abgeschlossene Tasks ergeben Punkte/Coins
-- [] Tasks können priorisiert werden
-- [] Tasks kategorisieren
-- [] Tasks suchen/filtern
-- [] Alles Tasks können in einer Übersicht angesehen werden
+- [ ] Tasks hinzufügen
+- [ ] Ansehen aller Tasks
+- [ ] Tasks können terminiert werden ( Deadline, verbleibende Zeit)
+- [ ] Tasks können beendet/ fertiggestellt werden
+- [ ] Tasks können gelöscht werden
+- [ ] abgeschlossene Tasks ergeben Punkte/Coins
+- [ ] Tasks können priorisiert werden
+- [ ] Tasks kategorisieren
+- [ ] Tasks suchen/filtern
+- [ ] Alles Tasks können in einer Übersicht angesehen werden
 
 ## Roadmap
 
