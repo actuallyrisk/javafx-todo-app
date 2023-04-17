@@ -21,7 +21,7 @@ public class Main extends Application {
 
     /**
      * The start() method is called by the JavaFX framework when the application is launched.
-     * It loads the sample.fxml file and creates a new stage to display it.
+     * It loads a fxml file and creates a new stage to display it.
      *
      * @param primaryStage the primary stage for this application
      * @throws Exception if an error occurs while loading the FXML file
