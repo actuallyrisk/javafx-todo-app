@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="860.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.ImportantTasksController">
+    <children>
+        <AnchorPane layoutX="250.0" prefHeight="560.0" prefWidth="610.0" />
+        <AnchorPane prefHeight="560.0" prefWidth="200.0" styleClass="sidebar">
+            <children>
+                <Button layoutY="72.0" mnemonicParsing="false" onAction="#handleSwitchToSceneTodayButton" prefHeight="45.0" prefWidth="250.0" text="Today" />
+                <Button layoutY="117.0" mnemonicParsing="false" onAction="#handleSwitchToSceneScheduledButton" prefHeight="45.0" prefWidth="250.0" text="Scheduled" />
+                <Button layoutY="162.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="active" text="Important" />
+                <Button layoutY="207.0" mnemonicParsing="false" onAction="#handleSwitchToSceneAllButton" prefHeight="45.0" prefWidth="250.0" text="All Tasks" />
+            </children>
+        </AnchorPane>
+    </children>
+    <styleClass>
+        <String fx:value="main" />
+    </styleClass>
+</AnchorPane>
