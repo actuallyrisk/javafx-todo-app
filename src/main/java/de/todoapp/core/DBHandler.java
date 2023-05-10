@@ -22,9 +22,12 @@ public class DBHandler {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name TEXT NOT NULL," +
-                    "due_date TEXT NOT NULL," +
-                    "importance INTEGER NOT NULL," +
-                    "finished INTEGER" +
+                    "description TEXT," +
+                    "state INTEGER NOT NULL," +
+                    "due_date DATE NOT NULL," +
+                    "priority INTEGER NOT NULL," +
+                    "points INTEGER NOT NULL," +
+                    "category TEXT" +
                     ")";
             statement.execute(createTableSQL);
 
@@ -38,20 +41,22 @@ public class DBHandler {
         }
     }
 
-    public static void addTask(String name, String dueDate, int importance) {
+    public static void addTask(String name, String description, int state, String dueDate, int priority, int points, String category) {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
             statement = connection.createStatement();
 
             // Insert a new task into the database
-            String insertSQL = "INSERT INTO tasks (name, due_date, importance, finished) " +
-                    "VALUES ('" + name + "', '" + dueDate + "', " + importance + ", 0)";
+            String insertSQL = "INSERT INTO tasks (name, description, state, due_date, priority, points, category) " +
+                    "VALUES ('" + name + "', '" + description + "', '" + state + "', '" + dueDate + "', '" + priority + "', " + points + ", )" + category + ")";
             statement.execute(insertSQL);
 
             // Close the statement and connection
             statement.close();
             connection.close();
+
+            //TODO: RETURN ID
 
             System.out.println("Task added successfully.");
         } catch (SQLException e) {
