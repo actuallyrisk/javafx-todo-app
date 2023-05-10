@@ -6,12 +6,6 @@ public class DBHandler {
     private static Connection connection;
     private static Statement statement;
 
-    public static void main(String[] args) {
-        // Create the SQLite database if it doesn't exist
-        createDatabase();
-
-    }
-
     private static void createDatabase() {
         try {
             // Connect to the database
@@ -41,7 +35,8 @@ public class DBHandler {
         }
     }
 
-    public static void addTask(String name, String description, int state, String dueDate, int priority, int points, String category) {
+    public static int addTask(String name, String description, int state, String dueDate, int priority, int points, String category) {
+        int taskId = -1;
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
@@ -49,30 +44,37 @@ public class DBHandler {
 
             // Insert a new task into the database
             String insertSQL = "INSERT INTO tasks (name, description, state, due_date, priority, points, category) " +
-                    "VALUES ('" + name + "', '" + description + "', '" + state + "', '" + dueDate + "', '" + priority + "', " + points + ", )" + category + ")";
-            statement.execute(insertSQL);
+                    "VALUES ('" + name + "', '" + description + "', '" + state + "', '" + dueDate + "', '" + priority + "', " + points + ", '" + category + "')";
+            int rowsAffected = statement.executeUpdate(insertSQL, Statement.RETURN_GENERATED_KEYS);
+
+            // Get the generated key (i.e. the ID of the inserted task)
+            if (rowsAffected == 1) {
+                ResultSet rs = statement.getGeneratedKeys();
+                if (rs.next()) {
+                    taskId = rs.getInt(1);
+                }
+            }
 
             // Close the statement and connection
             statement.close();
             connection.close();
 
-            //TODO: RETURN ID
-
             System.out.println("Task added successfully.");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+        return taskId;
     }
 
-    public static void editTask(int id, String name, String dueDate, int importance, int finished) {
+
+    public static void editTask(int id, String column, String value) {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
             statement = connection.createStatement();
 
             // Update an existing task in the database
-            String updateSQL = "UPDATE tasks SET name='" + name + "', due_date='" + dueDate + "', " +
-                    "importance=" + importance + ", finished=" + finished + " WHERE id=" + id;
+            String updateSQL = "UPDATE tasks SET " + column + "=" + value + " WHERE id="+ id;
             statement.execute(updateSQL);
 
             // Close the statement and connection
@@ -124,16 +126,19 @@ public class DBHandler {
             resultSet.beforeFirst();
 
             // Create an array to hold the tasks
-            tasks = new String[rowCount][5];
+            tasks = new String[rowCount][8];
 
             // Fill the array with the tasks
             int i = 0;
             while (resultSet.next()) {
                 tasks[i][0] = Integer.toString(resultSet.getInt("id"));
                 tasks[i][1] = resultSet.getString("name");
-                tasks[i][2] = resultSet.getString("due_date");
-                tasks[i][3] = Integer.toString(resultSet.getInt("importance"));
-                tasks[i][4] = Integer.toString(resultSet.getInt("finished"));
+                tasks[i][2] = resultSet.getString("description");
+                tasks[i][3] = Integer.toString(resultSet.getInt("state"));
+                tasks[i][4] = resultSet.getString("due_date");
+                tasks[i][5] = Integer.toString(resultSet.getInt("priority"));
+                tasks[i][6] = Integer.toString(resultSet.getInt("points"));
+                tasks[i][7] = resultSet.getString("category");
                 i++;
             }
 
@@ -148,6 +153,8 @@ public class DBHandler {
         }
         return tasks;
     }
+
+
 
     public static String[] getTaskById(int id) {
         String[] task = null;
