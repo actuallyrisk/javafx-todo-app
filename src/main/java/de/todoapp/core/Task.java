@@ -2,27 +2,27 @@ package de.todoapp.core;
 
 import java.util.Date;
 
-public abstract class Task {
+public class Task {
 
+    private int id;
     private String name;
     private String description;
+    private String category;
     private Priority priority;
-    private Date creationTimeStamp;
-    private Date deadline;
+    private State state;
+    private Date dueDate;
     private int points;
 
-    public Task(String name, String description, Priority priority, Date creationTimeStamp, Date deadline, int points, int categoryFlags) {
+    public Task(int id, String name, String description, State state, Date dueDate, Priority priority, int points,String category) {
         this.name = name;
         this.description = description;
+        this.category = category;
         this.priority = priority;
-        this.creationTimeStamp = creationTimeStamp;
-        this.deadline = deadline;
+        this.state = state;
+        this.dueDate = dueDate;
         this.points = points;
-        this.categoryFlags = categoryFlags;
+        this.id = id;
     }
-
-    private State state;
-    private long categoryFlags;
 
     public State getState() {
         return state;
@@ -36,8 +36,27 @@ public abstract class Task {
         return name;
     }
 
-    public final long getCategoryFlags() {
-        return categoryFlags;
+    public final String getCategory() {
+        return category;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public final String getDescription() {
+        return description;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }
