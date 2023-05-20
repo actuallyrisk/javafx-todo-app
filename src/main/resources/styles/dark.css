@@ -1,0 +1,62 @@
+/*!
+ *  Copyright (c) 2023
+ *  JavaFX ToDo App
+ *
+ *  Author:  Tobias Metzger
+ *  Version: 1.0.0
+ *  Since:   2023-05-20
+ */
+
+.main {
+    -fx-background-color: rgb(37, 37, 37);
+}
+
+.sidebar {
+    -fx-background-color: rgb(27, 28, 28);
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgb(182, 182, 182);
+}
+
+.nav-button:hover {
+    -fx-background-color: rgb(55, 55, 55);
+}
+
+.active {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.check-box .box {
+    -fx-border-color: rgb(182, 182, 182);
+}
+
+.check-box:selected .mark {
+    -fx-background-color: rgb(37, 37, 37);
+    -fx-border-color: rgb(37, 37, 37);
+}
+
+.check-box:selected .box {
+    -fx-background-color: rgb(182, 182, 182);
+    -fx-border-color: rgb(182, 182, 182);
+}
+
+.theme-switcher-container {
+    -fx-border-color: rgb(182, 182, 182);
+    -fx-text-fill: rgb(182, 182, 182);
+}
+
+.theme-switcher-text {
+    -fx-text-fill: rgb(182, 182, 182);
+    -fx-fill: rgb(182, 182, 182);
+}
+
+.theme-switcher {
+    -fx-text-fill: rgb(200, 200, 200);
+}
+
+.theme-switcher:hover {
+    -fx-text-fill: rgb(240, 240, 240);
+}

@@ -1,3 +1,12 @@
+/*!
+ *  Copyright (c) 2023
+ *  JavaFX Todo App
+ *
+ *  Author:  Tobias Metzger
+ *  Version: 1.0.0
+ *  Since:   2023-05-20
+ */
+
 @font-face {
     font-family: 'Roboto Regular';
     src: url('../fonts/Roboto/Roboto-Regular.ttf');
@@ -8,27 +17,91 @@
     src: url('../fonts/Roboto/Roboto-Bold.ttf');
 }
 
-.main {
-    -fx-background-color: rgb(240, 240, 240);
+@font-face {
+    font-family: 'Minecraft Regular';
+    src: url('../fonts/Minecraft/Minecraft-Regular.ttf');
+}
+
+* {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.scroll-pane:focused {
+    -fx-focus-color: transparent;
+    -fx-background-insets: -1.4, 0, 1, 2;
 }
 
 .sidebar {
-    -fx-background-color: rgb(230, 230, 230);
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, .25), 25, 0, 0, 0);
-}
-
-.button {
-    -fx-background-color: rgb(230, 230, 230);
-    -fx-font-size: 16px;
     -fx-font-family: 'Roboto Regular', sans-serif;
 }
 
-.button:hover {
-    -fx-background-color: rgb(220, 220, 220);
+.nav-button {
+    -fx-font-size: 16px;
+    -fx-background-radius: 0;
+    -fx-font-family: 'Minecraft Regular';
+}
+
+.nav-button:hover {
     -fx-cursor: hand;
 }
 
 .active {
-    -fx-background-color: rgb(220, 220, 220);
-    -fx-font-family: 'Roboto Bold', sans-serif;
+    -fx-font-family: 'Minecraft Regular', sans-serif;
+}
+
+.active:hover {
+    -fx-cursor: default;
+}
+
+.check-box .box {
+    -fx-background-color: transparent;
+    -fx-border-radius: 100%;
+    -fx-padding: 8px;
+}
+
+.check-box:selected .box {
+    -fx-background-radius: 100%;
+    -fx-border-radius: 100%;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+.pane-header {
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: 640 406.5;
+}
+
+.theme-switcher-container {
+    -fx-border-style: solid none none none;
+    -fx-border-width: 1px;
+}
+
+.pane-header-today {
+    -fx-background-image: url('../images/sunset.png');
+    -fx-padding: 338 0 0 0;
+}
+
+.pane-header-scheduled {
+    -fx-background-image: url('../images/desert.jpg');
+}
+
+.pane-header-important {
+    -fx-background-image: url('../images/road.png');
+}
+
+.pane-header-all {
+    -fx-background-image: url('../images/plane.png');
+}
+
+.theme-switcher {
+    -fx-background-color: transparent;
+    -fx-font-family: 'Roboto Regular';
+    -fx-padding: 0 0 0 0;
+}
+
+.theme-switcher:hover {
+    -fx-cursor: hand;
 }
