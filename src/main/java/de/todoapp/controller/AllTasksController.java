@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -17,7 +19,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class AllTasksController extends BaseController {
-
     @FXML
     private Button switchToSceneTodayButton;
 
@@ -27,12 +28,14 @@ public class AllTasksController extends BaseController {
     @FXML
     private Button switchToSceneImportantButton;
 
+    private static final Logger logger = LogManager.getLogger(AllTasksController.class);
+
     /**
-     * Additional initialization logic for this controller.
+     * Initialization logic for this controller.
      */
+    @Override
     public void initialize() {
         super.initialize();
-        // ...
     }
 
     /**
@@ -45,6 +48,8 @@ public class AllTasksController extends BaseController {
     public void handleSwitchToSceneTodayButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/TodayTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"Today's Tasks\" scene.");
     }
 
     /**
@@ -57,6 +62,8 @@ public class AllTasksController extends BaseController {
     public void handleSwitchToSceneScheduledButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/ScheduledTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"Scheduled Tasks\" scene.");
     }
 
     /**
@@ -69,6 +76,8 @@ public class AllTasksController extends BaseController {
     public void handleSwitchToSceneImportantButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/ImportantTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"Important Tasks\" scene.");
     }
 
 }

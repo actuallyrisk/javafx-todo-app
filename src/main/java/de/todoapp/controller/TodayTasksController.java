@@ -5,7 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -17,7 +21,6 @@ import java.io.IOException;
  * @version 1.0
  */
 public class TodayTasksController extends BaseController {
-
     @FXML
     private Button switchToSceneScheduledButton;
 
@@ -27,12 +30,23 @@ public class TodayTasksController extends BaseController {
     @FXML
     private Button switchToSceneAllButton;
 
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
+    private AnchorPane anchorPaneParent;
+
+    private static final Logger logger = LogManager.getLogger(TodayTasksController.class);
+
     /**
-     * Additional initialization logic for this controller.
+     * Initialization logic for this controller.
      */
+    @Override
     public void initialize() {
         super.initialize();
-        // ...
     }
 
     /**
@@ -45,6 +59,8 @@ public class TodayTasksController extends BaseController {
     public void handleSwitchToSceneScheduledButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/ScheduledTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"Scheduled Tasks\" scene.");
     }
 
     /**
@@ -57,6 +73,8 @@ public class TodayTasksController extends BaseController {
     public void handleSwitchToSceneImportantButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/ImportantTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"Important Tasks\" scene.");
     }
 
     /**
@@ -69,6 +87,8 @@ public class TodayTasksController extends BaseController {
     public void handleSwitchToSceneAllButton(ActionEvent event) throws IOException {
         Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
         switchToScene(stage, "/fxml/AllTasks.fxml", Main.TITLE);
+
+        logger.debug("Scene changed to \"All Tasks\" scene.");
     }
 
 }

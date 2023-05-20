@@ -5,14 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class Main extends Application {
-
     public static final double WIDTH = 860.;
     public static final double HEIGHT = 560.;
     public static final String TITLE = "To-Do Desktop";
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     /**
      * Default constructor for the Main class.
@@ -24,15 +27,13 @@ public class Main extends Application {
      * It loads a fxml file and creates a new stage to display it.
      *
      * @param primaryStage the primary stage for this application
-     * @throws Exception if an error occurs while loading the FXML file
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/TodayTasks.fxml")));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/style.css")).toExternalForm());
 
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);
@@ -47,6 +48,7 @@ public class Main extends Application {
      * @param args command line arguments
      */
     public static void main(String[] args) {
+        logger.info("The app has been started.");
         Main.launch(args);
     }
 }
