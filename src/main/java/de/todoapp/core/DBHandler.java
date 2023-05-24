@@ -9,7 +9,7 @@ import java.sql.*;
 public class DBHandler {
     private static final Logger logger = LogManager.getLogger(DBHandler.class);
     private static Connection connection;
-    private static Statement statement;
+    private static PreparedStatement preparedStatement;
 
     public static void createDatabase() {
         try {
@@ -19,12 +19,11 @@ public class DBHandler {
 
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             if (isNewDatabase) {
                 // Create the tasks table
-                String createTableSQL = "CREATE TABLE tasks (" +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
+                        "id INTEGER PRIMARY KEY," +
                         "name TEXT NOT NULL," +
                         "description TEXT," +
                         "state INTEGER NOT NULL," +
@@ -33,7 +32,8 @@ public class DBHandler {
                         "points INTEGER NOT NULL," +
                         "category TEXT" +
                         ")";
-                statement.execute(createTableSQL);
+                preparedStatement = connection.prepareStatement(createTableSQL);
+                preparedStatement.execute();
 
                 logger.info("Database created successfully.");
             } else {
@@ -46,7 +46,7 @@ public class DBHandler {
                 if (!isTasksTableExists) {
                     // Create the tasks table if it doesn't exist
                     String createTableSQL = "CREATE TABLE tasks (" +
-                            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "id INTEGER PRIMARY KEY," +
                             "name TEXT NOT NULL," +
                             "description TEXT," +
                             "state INTEGER NOT NULL," +
@@ -55,7 +55,8 @@ public class DBHandler {
                             "points INTEGER NOT NULL," +
                             "category TEXT" +
                             ")";
-                    statement.execute(createTableSQL);
+                    preparedStatement = connection.prepareStatement(createTableSQL);
+                    preparedStatement.execute();
 
                     logger.info("Tasks table created successfully.");
                 } else {
@@ -63,36 +64,49 @@ public class DBHandler {
                 }
             }
 
-            // Close the statement and connection
-            statement.close();
-            connection.close();
+            // Close the prepared statement and connection
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
     }
+
+
 
     public static int addTask(String name, String description, int state, String dueDate, int priority, int points, String category) {
         int taskId = -1;
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             // Insert a new task into the database
             String insertSQL = "INSERT INTO tasks (name, description, state, due_date, priority, points, category) " +
-                    "VALUES ('" + name + "', '" + description + "', '" + state + "', '" + dueDate + "', '" + priority + "', " + points + ", '" + category + "')";
-            int rowsAffected = statement.executeUpdate(insertSQL, Statement.RETURN_GENERATED_KEYS);
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            preparedStatement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, description);
+            preparedStatement.setInt(3, state);
+            preparedStatement.setString(4, dueDate);
+            preparedStatement.setInt(5, priority);
+            preparedStatement.setInt(6, points);
+            preparedStatement.setString(7, category);
+            int rowsAffected = preparedStatement.executeUpdate();
 
             // Get the generated key (i.e. the ID of the inserted task)
             if (rowsAffected == 1) {
-                ResultSet rs = statement.getGeneratedKeys();
+                ResultSet rs = preparedStatement.getGeneratedKeys();
                 if (rs.next()) {
                     taskId = rs.getInt(1);
                 }
             }
 
-            // Close the statement and connection
-            statement.close();
+            // Close the prepared statement and connection
+            preparedStatement.close();
             connection.close();
 
             logger.info("Task added successfully.");
@@ -106,14 +120,16 @@ public class DBHandler {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             // Update an existing task in the database
-            String updateSQL = "UPDATE tasks SET " + column + "=" + value + " WHERE id=" + id;
-            statement.execute(updateSQL);
+            String updateSQL = "UPDATE tasks SET " + column + " = ? WHERE id = ?";
+            preparedStatement = connection.prepareStatement(updateSQL);
+            preparedStatement.setString(1, value);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
 
-            // Close the statement and connection
-            statement.close();
+            // Close the prepared statement and connection
+            preparedStatement.close();
             connection.close();
 
             logger.info("Task updated successfully.");
@@ -126,14 +142,15 @@ public class DBHandler {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             // Delete an existing task from the database
-            String deleteSQL = "DELETE FROM tasks WHERE id=" + id;
-            statement.execute(deleteSQL);
+            String deleteSQL = "DELETE FROM tasks WHERE id = ?";
+            preparedStatement = connection.prepareStatement(deleteSQL);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
 
-            // Close the statement and connection
-            statement.close();
+            // Close the prepared statement and connection
+            preparedStatement.close();
             connection.close();
 
             logger.info("Task deleted successfully.");
@@ -147,11 +164,11 @@ public class DBHandler {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             // Retrieve all tasks from the database
             String selectSQL = "SELECT * FROM tasks";
-            ResultSet resultSet = statement.executeQuery(selectSQL);
+            preparedStatement = connection.prepareStatement(selectSQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             // Determine the number of tasks in the result set
             int rowCount = 0;
@@ -177,9 +194,9 @@ public class DBHandler {
                 i++;
             }
 
-            // Close the result set, statement, and connection
+            // Close the result set, prepared statement, and connection
             resultSet.close();
-            statement.close();
+            preparedStatement.close();
             connection.close();
 
             logger.info("All tasks retrieved successfully.");
@@ -194,11 +211,12 @@ public class DBHandler {
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
-            statement = connection.createStatement();
 
             // Retrieve the task with the specified ID from the database
-            String selectSQL = "SELECT * FROM tasks WHERE id=" + id;
-            ResultSet resultSet = statement.executeQuery(selectSQL);
+            String selectSQL = "SELECT * FROM tasks WHERE id = ?";
+            preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             // Fill the array with the task
             task = new String[5];
@@ -210,9 +228,9 @@ public class DBHandler {
                 task[4] = Integer.toString(resultSet.getInt("finished"));
             }
 
-            // Close the result set, statement, and connection
+            // Close the result set, prepared statement, and connection
             resultSet.close();
-            statement.close();
+            preparedStatement.close();
             connection.close();
 
             logger.info("Task retrieved successfully.");
