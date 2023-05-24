@@ -40,6 +40,7 @@ public class BaseController {
 
     protected AppConfig appConfig = AppConfig.getInstance();
 
+
     /**
      * Initializes the controller. This method is called after the FXML file has been loaded.
      * The method has to be implemented by subclasses to provide the initialization code.
@@ -154,26 +155,6 @@ public class BaseController {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    /**
-     * Gets the current OS selected Theme
-     */
-    private void determineSystemMode() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        String userAgent = javafx.application.Application.getUserAgentStylesheet();
-
-        String systemMode;
-        if (osName.contains("win")) {
-            // Windows
-            systemMode = (userAgent != null && userAgent.contains("modena")) ? "light mode" : "dark mode";
-        } else if (osName.contains("mac")) {
-            // macOS
-            systemMode = (userAgent != null && userAgent.contains("macintosh")) ? "light mode" : "dark mode";
-        } else {
-            // Linux or other systems
-            systemMode = (userAgent != null && userAgent.contains("caspian")) ? "light mode" : "dark mode";
-        }
     }
 
 }
