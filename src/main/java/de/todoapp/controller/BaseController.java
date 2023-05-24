@@ -7,8 +7,6 @@ import de.todoapp.core.TaskManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
@@ -18,20 +16,28 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
- * This is an abstract base controller class that provides common functionality
- * for all controllers in the application.
+ * This is the base controller class that provides common functionality for all
+ * controllers in the application.
  *
- * @author Tobias Metzger
- * @version 1.0
+ * @author Luis Kronenbitter, Tobias Metzger
+ * @version 1.2
  */
 public class BaseController {
-    protected Stage primaryStage;
+    private static BaseController instance;
+
+    protected AppConfig appConfig = AppConfig.getInstance();
+
+    private Stage stage;
+
+    private static final Logger LOGGER = LogManager.getLogger(BaseController.class);
+
+    private static final HashMap<String, Scene> sceneStorage = new HashMap<>();
 
     @FXML
     protected Text themeSwitcherText;
@@ -42,10 +48,24 @@ public class BaseController {
     @FXML
     protected Pane paneHeader;
 
-    private static final Logger logger = LogManager.getLogger(BaseController.class);
+    /**
+     * Protected constructor for the BaseController class.
+     */
+    protected BaseController() {
+    }
 
-    protected AppConfig appConfig = AppConfig.getInstance();
-
+    /**
+     * Retrieves the instance of the BaseController using the singleton pattern.
+     * If the instance does not exist, a new instance is created.
+     *
+     * @return the instance of the BaseController
+     */
+    public static synchronized BaseController getInstance() {
+        if (instance == null) {
+            instance = new BaseController();
+        }
+        return instance;
+    }
 
     /**
      * Initializes the controller. This method is called after the FXML file has been loaded.
@@ -109,7 +129,7 @@ public class BaseController {
             themeSwitcherBtn.setText("dark mode");
 
             // Logging and saving the mode in the app config
-            logger.info("The application has been set to Light Mode.");
+            LOGGER.info("The application has been set to Light Mode.");
             appConfig.setDarkMode(false);
         } else {
             themeSwitcherBtn.getScene().getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
@@ -118,7 +138,7 @@ public class BaseController {
             themeSwitcherBtn.setText("light mode");
 
             // Logging and saving the mode in the app config
-            logger.info("The application has been set to Dark Mode.");
+            LOGGER.info("The application has been set to Dark Mode.");
             appConfig.setDarkMode(true);
         }
     }
@@ -126,48 +146,81 @@ public class BaseController {
     /**
      * Sets the primary stage to the given stage and attaches a handler for closing the application.
      *
-     * @param primaryStage the primary stage of the application
+     * @param stage the primary stage of the application
      */
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public void setStage(Stage stage) {
+        this.stage = stage;
 
         // Handler for closing the application
-        this.primaryStage.setOnCloseRequest(e -> {
-            logger.info("The app has been stopped.");
+        this.stage.setOnCloseRequest(e -> {
+            LOGGER.info("The app has been stopped.");
             Platform.exit();
             System.exit(0);
         });
     }
 
     /**
-     * Loads the specified FXML file and switches to the corresponding scene.
+     * Retrieves the stage object.
      *
-     * @param stage        the primary stage of the application
-     * @param fxmlFileName the name of the FXML file to load
-     * @param title        the title of the new scene
-     * @throws IOException if an I/O error occurs while loading the FXML file
+     * @return the stage object
      */
-    public void switchToScene(Stage stage, String fxmlFileName, String title) throws IOException {
-        // Set the primary stage of the application
-        setPrimaryStage(stage);
+    public Stage getStage() {
+        return this.stage;
+    }
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlFileName)));
-        Scene scene = new Scene(root);
+    /**
+     * Switches the scene of the stage based on the given key.
+     *
+     * @param key the key to identify the desired scene
+     */
+    public static void switchScene(String key) {
+        // Get the instance of the BaseController
+        BaseController controller = getInstance();
 
-        // Set the title of the primary stage if provided
-        if (title != null) {
-            primaryStage.setTitle(title);
+        // Retrieve the stage object from the BaseController instance
+        Stage stage = controller.getStage();
+
+        // Set the scene of the stage based on the given key
+        stage.setScene(controller.getScene(key));
+
+        // Show the stage
+        stage.show();
+
+        // Log an info message indicating that the scene has been changed
+        LOGGER.debug("Scene changed to " + key + " scene.");
+    }
+
+    /**
+     * Sets the scene for the given key in the scene storage, if the key does not already exist.
+     *
+     * @param key   the key to identify the scene
+     * @param scene the scene to be set
+     */
+    public void putScene(String key, Scene scene) {
+        // Check if the key already exists in the scene storage
+        if (!sceneStorage.containsKey(key)) {
+            // Add the scene to the scene storage with the given key
+            sceneStorage.put(key, scene);
+            // Log a debug message indicating that a new scene was added for the key
+            LOGGER.debug("A new scene was added for key: " + key);
         }
+    }
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    /**
+     * Retrieves the scene associated with the given key from the scene storage.
+     *
+     * @param key the key to identify the desired scene
+     * @return the scene associated with the key, or null if the key is not found
+     */
+    public Scene getScene(String key) {
+        // Retrieve the scene associated with the given key from the scene storage
+        return sceneStorage.get(key);
     }
 
     @FXML
-    public void addTaskWithButton(ActionEvent event) throws IOException{
-        TaskManager taskManager=new TaskManager();
-        taskManager.addTask("task-1","example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH,10, "ShitToDo");
-        logger.debug("Task added");
+    public void addTaskWithButton(ActionEvent event) {
+        TaskManager taskManager = new TaskManager();
+        taskManager.addTask("task-1", "example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH, 10, "ShitToDo");
+        LOGGER.debug("Task added");
     }
-
 }

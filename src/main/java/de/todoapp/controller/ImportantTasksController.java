@@ -1,24 +1,21 @@
 package de.todoapp.controller;
 
-import de.todoapp.core.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 /**
  * Controller class for the Important Tasks view.
  * Extends {@link BaseController}.
  *
  * @author Tobias Metzger
- * @version 1.0
+ * @version 1.1
  */
 public class ImportantTasksController extends BaseController {
+    private static final Logger LOOGER = LogManager.getLogger(ImportantTasksController.class);
+
     @FXML
     private Button switchToSceneTodayButton;
 
@@ -27,8 +24,6 @@ public class ImportantTasksController extends BaseController {
 
     @FXML
     private Button switchToSceneAllButton;
-
-    private static final Logger logger = LogManager.getLogger(ImportantTasksController.class);
 
     /**
      * Initialization logic for this controller.
@@ -39,45 +34,38 @@ public class ImportantTasksController extends BaseController {
     }
 
     /**
-     * Handles the button click event for switching to the "Today's Tasks" scene.
+     * Event handler for switching to the "TodayTasks" scene.
+     * This method is called when the corresponding button is clicked.
      *
-     * @param event the event object
-     * @throws IOException if the FXML file for the "Today's Tasks" scene cannot be loaded
+     * @param event the action event triggered by the button click
      */
     @FXML
-    public void handleSwitchToSceneTodayButton(ActionEvent event) throws IOException {
-        Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
-        switchToScene(stage, "/fxml/TodayTasks.fxml", Main.TITLE);
-
-        logger.debug("Scene changed to \"Today's Tasks\" scene.");
+    public void handleSwitchToSceneTodayButton(ActionEvent event) {
+        // Switch the scene to the "TodayTasks" scene
+        switchScene("TodayTasks");
     }
 
     /**
-     * Handles the button click event for switching to the "Scheduled Tasks" scene.
+     * Event handler for switching to the "ScheduledTasks" scene.
+     * This method is called when the corresponding button is clicked.
      *
-     * @param event the event object
-     * @throws IOException if the FXML file for the "Scheduled Tasks" scene cannot be loaded
+     * @param event the action event triggered by the button click
      */
     @FXML
-    public void handleSwitchToSceneScheduledButton(ActionEvent event) throws IOException {
-        Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
-        switchToScene(stage, "/fxml/ScheduledTasks.fxml", Main.TITLE);
-
-        logger.debug("Scene changed to \"Scheduled Tasks\" scene.");
+    public void handleSwitchToSceneScheduledButton(ActionEvent event) {
+        // Switch the scene to the "ScheduledTasks" scene
+        switchScene("ScheduledTasks");
     }
 
     /**
-     * Handles the button click event for switching to the "All Tasks" scene.
+     * Event handler for switching to the "AllTasks" scene.
+     * This method is called when the corresponding button is clicked.
      *
-     * @param event the event object
-     * @throws IOException if the FXML file for the "All Tasks" scene cannot be loaded
+     * @param event the action event triggered by the button click
      */
     @FXML
-    public void handleSwitchToSceneAllButton(ActionEvent event) throws IOException {
-        Stage stage = ((Stage) ((Node) event.getSource()).getScene().getWindow());
-        switchToScene(stage, "/fxml/AllTasks.fxml", Main.TITLE);
-
-        logger.debug("Scene changed to \"All Tasks\" scene.");
+    public void handleSwitchToSceneAllButton(ActionEvent event) {
+        // Switch the scene to the "AllTasks" scene
+        switchScene("AllTasks");
     }
-
 }
