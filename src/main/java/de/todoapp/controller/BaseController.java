@@ -60,7 +60,7 @@ public class BaseController {
 
         // Add gaussian blur to paneHeader, as not possible via CSS
         GaussianBlur gaussianBlur = new GaussianBlur();
-        gaussianBlur.setRadius(10);
+        gaussianBlur.setRadius(3);
         paneHeader.setEffect(gaussianBlur);
     }
 
