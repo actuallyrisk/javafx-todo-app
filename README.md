@@ -4,10 +4,10 @@ Eine App zum anlegen von Aufgaben im Pixel-Art Stil.
 
 ## Teilnehmer
 
-Luis Kronenbitter
-Anton Horn
-Tobias Metzger
-Tomislav Zecevic
+Luis Kronenbitter<br>
+Anton Horn<br>
+Tobias Metzger<br>
+Tomislav Zecevic<br>
 
 ## Aufteilung
 

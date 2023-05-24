@@ -1,37 +1,73 @@
 package de.todoapp.core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 import java.sql.*;
 
 public class DBHandler {
+    private static final Logger logger = LogManager.getLogger(DBHandler.class);
     private static Connection connection;
     private static Statement statement;
 
-    private static void createDatabase() {
+    public static void createDatabase() {
         try {
+            // Check if the todo.db file exists
+            File dbFile = new File("todo.db");
+            boolean isNewDatabase = !dbFile.exists();
+
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
             statement = connection.createStatement();
 
-            // Create the tasks table if it doesn't exist
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "name TEXT NOT NULL," +
-                    "description TEXT," +
-                    "state INTEGER NOT NULL," +
-                    "due_date DATE NOT NULL," +
-                    "priority INTEGER NOT NULL," +
-                    "points INTEGER NOT NULL," +
-                    "category TEXT" +
-                    ")";
-            statement.execute(createTableSQL);
+            if (isNewDatabase) {
+                // Create the tasks table
+                String createTableSQL = "CREATE TABLE tasks (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "name TEXT NOT NULL," +
+                        "description TEXT," +
+                        "state INTEGER NOT NULL," +
+                        "due_date DATE NOT NULL," +
+                        "priority INTEGER NOT NULL," +
+                        "points INTEGER NOT NULL," +
+                        "category TEXT" +
+                        ")";
+                statement.execute(createTableSQL);
+
+                logger.info("Database created successfully.");
+            } else {
+                // Check if the tasks table exists
+                DatabaseMetaData metadata = connection.getMetaData();
+                ResultSet tables = metadata.getTables(null, null, "tasks", null);
+                boolean isTasksTableExists = tables.next();
+                tables.close();
+
+                if (!isTasksTableExists) {
+                    // Create the tasks table if it doesn't exist
+                    String createTableSQL = "CREATE TABLE tasks (" +
+                            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            "name TEXT NOT NULL," +
+                            "description TEXT," +
+                            "state INTEGER NOT NULL," +
+                            "due_date DATE NOT NULL," +
+                            "priority INTEGER NOT NULL," +
+                            "points INTEGER NOT NULL," +
+                            "category TEXT" +
+                            ")";
+                    statement.execute(createTableSQL);
+
+                    logger.info("Tasks table created successfully.");
+                } else {
+                    logger.info("Database already exists.");
+                }
+            }
 
             // Close the statement and connection
             statement.close();
             connection.close();
-
-            System.out.println("Database created successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -59,13 +95,12 @@ public class DBHandler {
             statement.close();
             connection.close();
 
-            System.out.println("Task added successfully.");
+            logger.info("Task added successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return taskId;
     }
-
 
     public static void editTask(int id, String column, String value) {
         try {
@@ -74,16 +109,16 @@ public class DBHandler {
             statement = connection.createStatement();
 
             // Update an existing task in the database
-            String updateSQL = "UPDATE tasks SET " + column + "=" + value + " WHERE id="+ id;
+            String updateSQL = "UPDATE tasks SET " + column + "=" + value + " WHERE id=" + id;
             statement.execute(updateSQL);
 
             // Close the statement and connection
             statement.close();
             connection.close();
 
-            System.out.println("Task updated successfully.");
+            logger.info("Task updated successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -101,9 +136,9 @@ public class DBHandler {
             statement.close();
             connection.close();
 
-            System.out.println("Task deleted successfully.");
+            logger.info("Task deleted successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -147,14 +182,12 @@ public class DBHandler {
             statement.close();
             connection.close();
 
-            System.out.println("All tasks retrieved successfully.");
+            logger.info("All tasks retrieved successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return tasks;
     }
-
-
 
     public static String[] getTaskById(int id) {
         String[] task = null;
@@ -182,9 +215,9 @@ public class DBHandler {
             statement.close();
             connection.close();
 
-            System.out.println("Task retrieved successfully.");
+            logger.info("Task retrieved successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
         return task;
     }

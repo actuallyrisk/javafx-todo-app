@@ -33,6 +33,10 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/fxml/TodayTasks.fxml")));
         Parent root = loader.load();
 
+        // Call the createDatabase method from DBHandler
+        DBHandler.createDatabase();
+
+
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         primaryStage.setTitle(TITLE);
