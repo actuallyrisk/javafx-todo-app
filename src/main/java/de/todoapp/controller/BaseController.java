@@ -156,4 +156,24 @@ public class BaseController {
         primaryStage.show();
     }
 
+    /**
+     * Gets the current OS selected Theme
+     */
+    private void determineSystemMode() {
+        String osName = System.getProperty("os.name").toLowerCase();
+        String userAgent = javafx.application.Application.getUserAgentStylesheet();
+
+        String systemMode;
+        if (osName.contains("win")) {
+            // Windows
+            systemMode = (userAgent != null && userAgent.contains("modena")) ? "light mode" : "dark mode";
+        } else if (osName.contains("mac")) {
+            // macOS
+            systemMode = (userAgent != null && userAgent.contains("macintosh")) ? "light mode" : "dark mode";
+        } else {
+            // Linux or other systems
+            systemMode = (userAgent != null && userAgent.contains("caspian")) ? "light mode" : "dark mode";
+        }
+    }
+
 }
