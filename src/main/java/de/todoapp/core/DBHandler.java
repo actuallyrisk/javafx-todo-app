@@ -13,12 +13,12 @@ public class DBHandler {
 
     public static void createDatabase() {
         try {
-            // Check if the todo.db file exists
-            File dbFile = new File("todo.db");
+            // Check if the todo.sqlite file exists
+            File dbFile = new File("todo.sqlite");
             boolean isNewDatabase = !dbFile.exists();
 
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             if (isNewDatabase) {
                 // Create the tasks table
@@ -82,7 +82,7 @@ public class DBHandler {
         int taskId = -1;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             // Insert a new task into the database
             String insertSQL = "INSERT INTO tasks (name, description, state, due_date, priority, points, category) " +
@@ -119,7 +119,7 @@ public class DBHandler {
     public static void editTask(int id, String column, String value) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             // Update an existing task in the database
             String updateSQL = "UPDATE tasks SET " + column + " = ? WHERE id = ?";
@@ -141,7 +141,7 @@ public class DBHandler {
     public static void deleteTask(int id) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             // Delete an existing task from the database
             String deleteSQL = "DELETE FROM tasks WHERE id = ?";
@@ -163,7 +163,7 @@ public class DBHandler {
         String[][] tasks = null;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             // Retrieve all tasks from the database
             String selectSQL = "SELECT * FROM tasks";
@@ -210,7 +210,7 @@ public class DBHandler {
         String[] task = null;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
             // Retrieve the task with the specified ID from the database
             String selectSQL = "SELECT * FROM tasks WHERE id = ?";
