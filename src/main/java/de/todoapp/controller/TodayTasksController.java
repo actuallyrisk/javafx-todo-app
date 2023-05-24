@@ -1,6 +1,9 @@
 package de.todoapp.controller;
 
 import de.todoapp.core.Main;
+import de.todoapp.core.Priority;
+import de.todoapp.core.State;
+import de.todoapp.core.TaskManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,6 +15,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Locale;
 
 /**
  * Controller class for the Today Tasks view.
@@ -38,6 +44,9 @@ public class TodayTasksController extends BaseController {
 
     @FXML
     private AnchorPane anchorPaneParent;
+
+    @FXML
+    private Button AddTask;
 
     private static final Logger logger = LogManager.getLogger(TodayTasksController.class);
 
@@ -76,6 +85,9 @@ public class TodayTasksController extends BaseController {
 
         logger.debug("Scene changed to \"Important Tasks\" scene.");
     }
+
+
+
 
     /**
      * Handles the button click event for switching to the "All Tasks" scene.

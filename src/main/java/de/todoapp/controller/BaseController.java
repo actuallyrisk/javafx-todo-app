@@ -1,7 +1,11 @@
 package de.todoapp.controller;
 
 import de.todoapp.config.AppConfig;
+import de.todoapp.core.Priority;
+import de.todoapp.core.State;
+import de.todoapp.core.TaskManager;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +19,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -155,6 +161,13 @@ public class BaseController {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    @FXML
+    public void addTaskWithButton(ActionEvent event) throws IOException{
+        TaskManager taskManager=new TaskManager();
+        taskManager.addTask("task-1","example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH,10, "ShitToDo");
+        logger.debug("Task added");
     }
 
 }

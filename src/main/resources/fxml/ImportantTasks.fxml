@@ -20,7 +20,10 @@
                                     <styleClass>
                                         <String fx:value="pane-header" />
                                         <String fx:value="pane-header-important" />
-                                    </styleClass></Pane>
+                                    </styleClass>
+                                    <children>
+                                        <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task" />
+                                    </children></Pane>
                                 <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
                             </children></AnchorPane>
                     </content>
