@@ -1,5 +1,9 @@
 package de.todoapp.config;
 
+import com.jthemedetecor.OsThemeDetector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * The AppConfig class represents the configuration settings for the application.
  * It provides access to various configuration options, such as the dark mode setting.
@@ -9,13 +13,28 @@ package de.todoapp.config;
  */
 public class AppConfig {
     private static AppConfig instance;
-    private boolean darkMode = false;
+    private boolean darkMode = true;
+    private static final Logger logger = LogManager.getLogger(AppConfig.class);
 
     /**
      * Private constructor to restrict the instantiation of AppConfig class from other classes.
      * This ensures that AppConfig follows the Singleton pattern and only one instance of AppConfig can exist.
      */
-    private AppConfig() {}
+    private AppConfig() {
+
+        //GET OS THEME
+        final OsThemeDetector detector = OsThemeDetector.getDetector();
+        final boolean isDarkThemeUsed = detector.isDark();
+        if (isDarkThemeUsed) {
+            setDarkMode(true);
+            logger.info("The application has been set to Dark Mode.");
+        } else {
+            setDarkMode(false);
+            logger.info("The application has been set to Light Mode.");
+        }
+
+
+    }
 
     /**
      * Returns the singleton instance of the AppConfig class.

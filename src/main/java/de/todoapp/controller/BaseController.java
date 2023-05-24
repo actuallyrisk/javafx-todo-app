@@ -40,6 +40,7 @@ public class BaseController {
 
     protected AppConfig appConfig = AppConfig.getInstance();
 
+
     /**
      * Initializes the controller. This method is called after the FXML file has been loaded.
      * The method has to be implemented by subclasses to provide the initialization code.
