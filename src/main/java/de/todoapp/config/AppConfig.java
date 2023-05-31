@@ -8,32 +8,33 @@ import org.apache.logging.log4j.Logger;
  * The AppConfig class represents the configuration settings for the application.
  * It provides access to various configuration options, such as the dark mode setting.
  *
- * @author Tobias Metzger
+ * @author Tomislav Zecevic, Tobias Metzger
  * @version 1.0
  */
 public class AppConfig {
     private static AppConfig instance;
+
     private boolean darkMode = true;
-    private static final Logger logger = LogManager.getLogger(AppConfig.class);
+
+    private static final Logger LOGGER = LogManager.getLogger(AppConfig.class);
 
     /**
      * Private constructor to restrict the instantiation of AppConfig class from other classes.
      * This ensures that AppConfig follows the Singleton pattern and only one instance of AppConfig can exist.
      */
     private AppConfig() {
-
-        //GET OS THEME
+        // Get OS theme
         final OsThemeDetector detector = OsThemeDetector.getDetector();
         final boolean isDarkThemeUsed = detector.isDark();
+
+        // Set the theme accordingly
         if (isDarkThemeUsed) {
             setDarkMode(true);
-            logger.info("The application has been set to Dark Mode.");
+            LOGGER.info("The application has been set to Dark Mode.");
         } else {
             setDarkMode(false);
-            logger.info("The application has been set to Light Mode.");
+            LOGGER.info("The application has been set to Light Mode.");
         }
-
-
     }
 
     /**

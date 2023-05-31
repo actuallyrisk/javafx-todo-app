@@ -21,9 +21,10 @@
                                         <String fx:value="pane-header" />
                                         <String fx:value="pane-header-all" />
                                     </styleClass>
-                                    <children>
-                                        <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task" />
-                                    </children></Pane>
+                                </Pane>
+                                <Pane prefHeight="212.0" prefWidth="610.0">
+                                    <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task"/>
+                                </Pane>
                                 <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
                             </children></AnchorPane>
                     </content>
@@ -34,11 +35,11 @@
                 <Button layoutY="72.0" mnemonicParsing="false" onAction="#handleSwitchToSceneTodayButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Today" />
                 <Button layoutY="117.0" mnemonicParsing="false" onAction="#handleSwitchToSceneScheduledButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Scheduled" />
                 <Button layoutY="162.0" mnemonicParsing="false" onAction="#handleSwitchToSceneImportantButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Important" />
-                <Button layoutY="207.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="All Tasks">
-                <styleClass>
-                    <String fx:value="active" />
-                    <String fx:value="nav-button" />
-                </styleClass></Button>
+                <Button layoutY="207.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="All Tasks">
+                    <styleClass>
+                        <String fx:value="active" />
+                        <String fx:value="nav-button" />
+                    </styleClass></Button>
                 <HBox alignment="CENTER" layoutY="532.0" prefHeight="28.0" prefWidth="250.0" spacing="2.0" styleClass="theme-switcher-container">
                     <children>
                         <Text fx:id="themeSwitcherText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="theme-switcher-text" text="Too bright? Switch to" />

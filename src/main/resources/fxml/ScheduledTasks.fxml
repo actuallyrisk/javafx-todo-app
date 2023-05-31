@@ -21,9 +21,10 @@
                                         <String fx:value="pane-header" />
                                         <String fx:value="pane-header-scheduled" />
                                     </styleClass>
-                                    <children>
-                                        <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task" />
-                                    </children></Pane>
+                                </Pane>
+                                <Pane prefHeight="212.0" prefWidth="610.0">
+                                    <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task"/>
+                                </Pane>
                                 <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
                             </children></AnchorPane>
                     </content>
@@ -32,7 +33,7 @@
         <AnchorPane prefHeight="560.0" prefWidth="200.0" styleClass="sidebar">
             <children>
                 <Button layoutY="72.0" mnemonicParsing="false" onAction="#handleSwitchToSceneTodayButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Today" />
-                <Button layoutY="117.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Scheduled">
+                <Button layoutY="117.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Scheduled">
                     <styleClass>
                         <String fx:value="active" />
                         <String fx:value="nav-button" />

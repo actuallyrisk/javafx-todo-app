@@ -37,7 +37,7 @@ public class BaseController {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseController.class);
 
-    private static final HashMap<String, Scene> sceneStorage = new HashMap<>();
+    private static final HashMap<String, Scene> SCENE_STORAGE = new HashMap<>();
 
     @FXML
     protected Text themeSwitcherText;
@@ -122,22 +122,40 @@ public class BaseController {
      */
     @FXML
     public void handleSwitchTheme() {
-        if (appConfig.isDarkMode()) {
-            themeSwitcherBtn.getScene().getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-            themeSwitcherBtn.getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
-            themeSwitcherText.setText("Too light? Switch to");
-            themeSwitcherBtn.setText("dark mode");
+        // Setting the theme for all scenes
+        SCENE_STORAGE.forEach((key, scene) -> {
+            if (appConfig.isDarkMode()) {
+                // Adding the appropriate style
+                scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
 
-            // Logging and saving the mode in the app config
+                // Adjust the text accordingly
+                Text text = (Text) scene.lookup("#themeSwitcherText");
+                text.setText("Too light? Switch to");
+
+                // Adjust the button accordingly
+                Button button = (Button) scene.lookup("#themeSwitcherBtn");
+                button.setText("dark mode");
+            } else {
+                // Adding the appropriate style
+                scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+
+                // Adjust the text accordingly
+                Text text = (Text) scene.lookup("#themeSwitcherText");
+                text.setText("Too dark? Switch to");
+
+                // Adjust the button accordingly
+                Button button = (Button) scene.lookup("#themeSwitcherBtn");
+                button.setText("light mode");
+            }
+        });
+
+        // Logging and saving the mode in the app config
+        if (appConfig.isDarkMode()) {
             LOGGER.info("The application has been set to Light Mode.");
             appConfig.setDarkMode(false);
         } else {
-            themeSwitcherBtn.getScene().getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
-            themeSwitcherBtn.getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-            themeSwitcherText.setText("Too dark? Switch to");
-            themeSwitcherBtn.setText("light mode");
-
-            // Logging and saving the mode in the app config
             LOGGER.info("The application has been set to Dark Mode.");
             appConfig.setDarkMode(true);
         }
@@ -173,7 +191,7 @@ public class BaseController {
      *
      * @param key the key to identify the desired scene
      */
-    public static void switchScene(String key) {
+    public void switchScene(String key) {
         // Get the instance of the BaseController
         BaseController controller = getInstance();
 
@@ -198,9 +216,9 @@ public class BaseController {
      */
     public void putScene(String key, Scene scene) {
         // Check if the key already exists in the scene storage
-        if (!sceneStorage.containsKey(key)) {
+        if (!SCENE_STORAGE.containsKey(key)) {
             // Add the scene to the scene storage with the given key
-            sceneStorage.put(key, scene);
+            SCENE_STORAGE.put(key, scene);
             // Log a debug message indicating that a new scene was added for the key
             LOGGER.debug("A new scene was added for key: " + key);
         }
@@ -214,7 +232,7 @@ public class BaseController {
      */
     public Scene getScene(String key) {
         // Retrieve the scene associated with the given key from the scene storage
-        return sceneStorage.get(key);
+        return SCENE_STORAGE.get(key);
     }
 
     @FXML

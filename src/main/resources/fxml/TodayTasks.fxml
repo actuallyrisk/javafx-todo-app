@@ -12,26 +12,27 @@
    <children>
       <AnchorPane layoutX="250.0" prefHeight="560.0" prefWidth="610.0">
          <children>
-            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxWidth="610.0" minWidth="600.0" prefHeight="560.0" prefWidth="610.0" styleClass="edge-to-edge">
-              <content>
-                <AnchorPane fx:id="anchorPaneParent" maxWidth="609.0" minHeight="0.0" minWidth="0.0" prefHeight="558.0" prefWidth="609.0">
+            <ScrollPane hbarPolicy="NEVER" maxWidth="610.0" minWidth="600.0" prefHeight="560.0" prefWidth="610.0" styleClass="edge-to-edge">
+               <content>
+                  <AnchorPane maxWidth="609.0" minHeight="0.0" minWidth="0.0" prefHeight="558.0" prefWidth="609.0">
                      <children>
                         <Pane fx:id="paneHeader" prefHeight="212.0" prefWidth="610.0">
                            <styleClass>
                               <String fx:value="pane-header" />
                               <String fx:value="pane-header-today" />
                            </styleClass>
-                           <children>
-                              <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task" />
-                           </children></Pane>
-                        <AnchorPane fx:id="anchorPane" layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
+                        </Pane>
+                        <Pane prefHeight="212.0" prefWidth="610.0">
+                           <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task"/>
+                        </Pane>
+                        <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
                      </children></AnchorPane>
-              </content>
+               </content>
             </ScrollPane>
          </children></AnchorPane>
       <AnchorPane prefHeight="560.0" prefWidth="200.0" styleClass="sidebar">
          <children>
-            <Button layoutY="72.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" text="Today">
+            <Button layoutY="72.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Today">
                <styleClass>
                   <String fx:value="active" />
                   <String fx:value="nav-button" />

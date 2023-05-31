@@ -63,7 +63,7 @@ public class Main extends Application {
 
         // Setting the stage and switching to a scene
         BaseController.getInstance().setStage(stage);
-        BaseController.switchScene("TodayTasks");
+        BaseController.getInstance().switchScene("TodayTasks");
     }
 
     /**
