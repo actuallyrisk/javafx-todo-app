@@ -1,10 +1,7 @@
 package de.todoapp.core;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * This class represents a task manager that allows users to manage a list of tasks.
@@ -49,15 +46,9 @@ public class TaskManager {
      * @return the task with the specified name, or null if no task is found.
      */
     final Task getTaskByName(String name) {
-        // Iterate over the tasks list
-        for (Task task : tasks) {
-            // If a task with a matching name is found, return it
-            if (name.equals(task.getName())) {
-                return task;
-            }
-        }
-        // If no matching task is found, return null
-        return null;
+
+       return tasks.stream().filter((task -> name.equals(task.getName()))).findFirst().get();
+
     }
 
     /**
@@ -67,17 +58,7 @@ public class TaskManager {
      * @return an ArrayList of tasks with the specified category.
      */
     public final ArrayList<Task> getTasksByCategory(String category) {
-        // Create a new ArrayList to hold the matching tasks
-        ArrayList<Task> result = new ArrayList<>();
-        // Iterate over the tasks list
-        for (Task task : tasks) {
-            // If a task with a matching category is found, add it to the result list
-            if (task.equals(category)) {
-                result.add(task);
-            }
-        }
-        // Return the list of matching tasks
-        return result;
+        return new ArrayList<>( tasks.stream().filter((task -> task.getCategory() == category)).toList());
     }
 
     /**
@@ -87,17 +68,7 @@ public class TaskManager {
      * @return an ArrayList of tasks with the specified state.
      */
     public final ArrayList<Task> getTasksByState(State state) {
-        // Create a new ArrayList to hold the matching tasks
-        ArrayList<Task> result = new ArrayList<>();
-        // Iterate over the tasks list
-        for (Task task : tasks) {
-            // If a task with a matching state is found, add it to the result list
-            if (task.getState() == state) {
-                result.add(task);
-            }
-        }
-        // Return the list of matching tasks
-        return result;
+        return new ArrayList<>( tasks.stream().filter((task -> task.getState() == state)).toList());
     }
 
     /**
