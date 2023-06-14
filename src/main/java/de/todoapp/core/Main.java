@@ -22,7 +22,7 @@ public class Main extends Application {
 
     public static final String TITLE = "To-Do Desktop";
 
-    public static final String FXML_FOLDER_PATH = "/fxml/";
+    public static final String FXML_FOLDER_PATH = "/views/";
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
@@ -45,17 +45,17 @@ public class Main extends Application {
 
     /**
      * The start() method is called by the JavaFX framework when the application is launched.
-     * It loads a fxml file and creates a new stage to display it.
+     * It loads a views file and creates a new stage to display it.
      *
      * @param stage the primary stage for this application
      */
     @Override
     public void start(Stage stage) {
-        // Load all existing fxml files
+        // Load all existing views files
         loadFxmlFiles(FXML_FOLDER_PATH);
 
         // Call the createDatabase method from DBHandler
-        DBHandler.createDatabase();
+        Database.createDatabase();
 
         // Settings for the stage
         stage.setTitle(TITLE);
@@ -84,8 +84,8 @@ public class Main extends Application {
                 // Set the scene with the root component and the specified width and height
                 BaseController.getInstance().putScene(getKeyFromFileName(fxmlFile), new Scene(root, WIDTH, HEIGHT));
 
-                // Logs a debug message indicating that all fxml files have been loaded.
-                LOGGER.debug("All fxml files have been loaded.");
+                // Logs a debug message indicating that all views files have been loaded.
+                LOGGER.debug("All views files have been loaded.");
             }
         } catch (IOException e) {
             LOGGER.error(e.toString());

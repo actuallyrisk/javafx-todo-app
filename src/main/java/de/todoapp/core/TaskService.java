@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * This class represents a task manager that allows users to manage a list of tasks.
  */
-public class TaskManager {
+public class TaskService {
 
     /**
      * List of tasks managed by the task manager.
@@ -16,7 +16,7 @@ public class TaskManager {
     /**
      * Constructor method that initializes the tasks list as an empty ArrayList.
      */
-    public TaskManager() {
+    public TaskService() {
         tasks = new ArrayList<>();
     }
 
@@ -27,7 +27,7 @@ public class TaskManager {
      */
     public void loadFromDB() {
         // Retrieve all tasks from the database as a 2D array of strings
-        String[][] data = DBHandler.getAllTasks();
+        String[][] data = Database.getAllTasks();
         // Clear the current list of tasks
         tasks.clear();
         // Iterate over the database data
@@ -86,7 +86,7 @@ public class TaskManager {
     public void addTask(String name, String description, State state, Date dueDate, Priority priority, int points, String category) {
 
         // Add the new task to the database and retrieve its ID
-        int id = DBHandler.addTask(name, description, state.ordinal(), dueDate.toString(), priority.ordinal(), points, category);
+        int id = Database.addTask(name, description, state.ordinal(), dueDate.toString(), priority.ordinal(), points, category);
         // Create a new Task object with the specified values and the ID retrieved from the database
         tasks.add(new Task(id, name, description, state, dueDate, priority, points, category));
 
@@ -100,7 +100,7 @@ public class TaskManager {
      */
     public void deleteTask(Task task) {
         // Delete the task from the database using its ID
-        DBHandler.deleteTask(task.getId());
+        Database.deleteTask(task.getId());
         // Remove the task from the tasks list
         tasks.remove(task);
     }

@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.sql.*;
 
-public class DBHandler {
-    private static final Logger logger = LogManager.getLogger(DBHandler.class);
+public class Database {
+    private static final Logger logger = LogManager.getLogger(Database.class);
     private static Connection connection;
     private static PreparedStatement preparedStatement;
 

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Controller class for the Today Tasks view.
+ * Controller class for the Today Tasks views.
  * Extends {@link BaseController}.
  *
  * @author Tobias Metzger

@@ -3,7 +3,7 @@ package de.todoapp.controller;
 import de.todoapp.config.AppConfig;
 import de.todoapp.core.Priority;
 import de.todoapp.core.State;
-import de.todoapp.core.TaskManager;
+import de.todoapp.core.TaskService;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -237,8 +237,8 @@ public class BaseController {
 
     @FXML
     public void addTaskWithButton(ActionEvent event) {
-        TaskManager taskManager = new TaskManager();
-        taskManager.addTask("task-1", "example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH, 10, "ShitToDo");
+        TaskService taskService = new TaskService();
+        taskService.addTask("task-1", "example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH, 10, "ShitToDo");
         LOGGER.debug("Task added");
     }
 }

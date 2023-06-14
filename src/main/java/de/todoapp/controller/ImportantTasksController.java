@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Controller class for the Important Tasks view.
+ * Controller class for the Important Tasks views.
  * Extends {@link BaseController}.
  *
  * @author Tobias Metzger
