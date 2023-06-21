@@ -3,6 +3,8 @@
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -23,9 +25,25 @@
                            </styleClass>
                         </Pane>
                         <Pane prefHeight="212.0" prefWidth="610.0">
-                           <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" text="Add Task"/>
+                           <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" styleClass="buttonAddTask" text="Add Task" />
                         </Pane>
-                        <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main" />
+                        <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main">
+                           <children>
+                              <TableView  fx:id="tableView" layoutX="11.0" layoutY="99.0" prefHeight="200.0" prefWidth="603.0" styleClass="tableView">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="name" fx:id="name"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="description" fx:id="description"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="state" fx:id="state"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="due date" fx:id="dueDate"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="priority" fx:id="priority"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="points" fx:id="points"/>
+                                    <TableColumn prefWidth="75.0" styleClass="tableHeaderText" text="category" fx:id="category"/>
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children></AnchorPane>
                      </children></AnchorPane>
                </content>
             </ScrollPane>

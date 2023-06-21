@@ -1,6 +1,8 @@
 package de.todoapp.core;
 
+import de.todoapp.controller.AddTaskController;
 import de.todoapp.controller.BaseController;
+import de.todoapp.controller.TodayTasksController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +15,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
+import javafx.scene.control.TableView;
 
 public class Main extends Application {
     public static final double WIDTH = 860.;
@@ -25,6 +29,11 @@ public class Main extends Application {
     public static final String FXML_FOLDER_PATH = "/views/";
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
+
+    static TaskService ts=new TaskService();
+
+    TableView<Task> tableView=new TableView<Task>();
+
 
     /**
      * Default constructor for the Main class.
@@ -61,9 +70,11 @@ public class Main extends Application {
         stage.setTitle(TITLE);
         stage.setResizable(false);
 
+
         // Setting the stage and switching to a scene
         BaseController.getInstance().setStage(stage);
         BaseController.getInstance().switchScene("TodayTasks");
+
     }
 
     /**
@@ -81,8 +92,16 @@ public class Main extends Application {
                 // Load the FXML document using FXMLLoader and create a Parent component
                 Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(fxmlFolderPath + fxmlFile)));
 
-                // Set the scene with the root component and the specified width and height
-                BaseController.getInstance().putScene(getKeyFromFileName(fxmlFile), new Scene(root, WIDTH, HEIGHT));
+                //with the "AddTask.fxml" file will be a deviating scene created, with a different size compared to the other scenes
+                //the scene will be also put on the scene hashmap
+                if(fxmlFile.equals("AddTask.fxml")) {
+                    BaseController.getInstance().putScene(getKeyFromFileName(fxmlFile), new Scene(root, 302, 289));
+                }
+                else {
+                    // Set the scene with the root component and the specified width and height
+                    BaseController.getInstance().putScene(getKeyFromFileName(fxmlFile), new Scene(root, WIDTH, HEIGHT));
+                }
+
 
                 // Logs a debug message indicating that all views files have been loaded.
                 LOGGER.debug("All views files have been loaded.");

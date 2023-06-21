@@ -60,3 +60,7 @@
 .theme-switcher:hover {
     -fx-text-fill: rgb(110, 110, 110);
 }
+
+.errorLabel{
+    -fx-text-fill: rgb(255, 0, 0);
+}

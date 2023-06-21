@@ -3,23 +3,30 @@ package de.todoapp.controller;
 import de.todoapp.config.AppConfig;
 import de.todoapp.core.Priority;
 import de.todoapp.core.State;
+import de.todoapp.core.Task;
 import de.todoapp.core.TaskService;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Objects;
+
 
 /**
  * This is the base controller class that provides common functionality for all
@@ -47,6 +54,34 @@ public class BaseController {
 
     @FXML
     protected Pane paneHeader;
+
+
+    @FXML
+    private TableView<Task> tableView;
+
+    @FXML
+    private TableColumn<Task, String> name;
+
+    @FXML
+    private TableColumn<Task, String> description;
+
+    @FXML
+    private TableColumn<Task, State> state;
+
+    @FXML
+    private TableColumn<Task, Date> dueDate;
+
+    @FXML
+    private TableColumn<Task, Priority> priority;
+
+    @FXML
+    private TableColumn<Task, Integer> points;
+
+    @FXML
+    private TableColumn<Task, String> category;
+
+
+    TaskService ts=new TaskService();
 
     /**
      * Protected constructor for the BaseController class.
@@ -88,6 +123,20 @@ public class BaseController {
         GaussianBlur gaussianBlur = new GaussianBlur();
         gaussianBlur.setRadius(3);
         paneHeader.setEffect(gaussianBlur);
+
+
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        priority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+        state.setCellValueFactory(new PropertyValueFactory<>("state"));
+        dueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
+        points.setCellValueFactory(new PropertyValueFactory<>("points"));
+
+        ts.loadFromDB();
+        setTableData(ts.getTasksByCategory("random"));
+
+
     }
 
     /**
@@ -124,6 +173,11 @@ public class BaseController {
     public void handleSwitchTheme() {
         // Setting the theme for all scenes
         SCENE_STORAGE.forEach((key, scene) -> {
+
+
+            //prevents from scanning the "AddTask" hashmap-entry, the Scene AddTask will crash the whole Themeswitchfunctionality, because this Scene differs a lot from the other basic scenes
+            //if a dark mode for the AddTask Popup is required, there  must be created a separated specific method for this
+            if(!key.equals("AddTask")){
             if (appConfig.isDarkMode()) {
                 // Adding the appropriate style
                 scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
@@ -148,6 +202,18 @@ public class BaseController {
                 // Adjust the button accordingly
                 Button button = (Button) scene.lookup("#themeSwitcherBtn");
                 button.setText("light mode");
+            }
+        }
+        else {
+                if (appConfig.isDarkMode()) {
+                    // Adding the appropriate style
+                    scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+                } else {
+                    // Adding the appropriate style
+                    scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+                }
             }
         });
 
@@ -198,14 +264,19 @@ public class BaseController {
         // Retrieve the stage object from the BaseController instance
         Stage stage = controller.getStage();
 
+
+
         // Set the scene of the stage based on the given key
         stage.setScene(controller.getScene(key));
+
 
         // Show the stage
         stage.show();
 
+
         // Log an info message indicating that the scene has been changed
         LOGGER.debug("Scene changed to " + key + " scene.");
+
     }
 
     /**
@@ -235,10 +306,63 @@ public class BaseController {
         return SCENE_STORAGE.get(key);
     }
 
+
+    /**
+     * executes the following actions, when the button "add Task" is clicked:
+     * -loading scene, which was previously created in main class
+     * -connecting the scene to css
+     * -set the right css for the right theme
+     * -set the scene in a new stage, but in modality mode
+     * @param event eventhandler parameter
+     */
     @FXML
     public void addTaskWithButton(ActionEvent event) {
-        TaskService taskService = new TaskService();
-        taskService.addTask("task-1", "example", State.IN_PROGRESS, Date.valueOf(LocalDate.now()), Priority.HIGH, 10, "ShitToDo");
-        LOGGER.debug("Task added");
+
+        Scene scene =getScene("AddTask");
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/style.css")).toExternalForm());
+
+
+        //code block for setting automatically the theme of the addTask-window
+
+        if (appConfig.isDarkMode()) {
+            scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+
+
+            // Saving the mode in the app config
+            appConfig.setDarkMode(true);
+        } else {
+            scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+
+
+            // Saving the mode in the app config
+            appConfig.setDarkMode(false);
+        }
+
+
+        Stage stage =new Stage();
+
+        //Modality blocks the interaction with other stage until the current stage will be closed
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();    //TODO Unterschied zwischen showAndWait & show herausfinden
+
+        ts.loadFromDB();
+        setTableData(ts.getTasksByCategory("random"));
+
     }
+
+    /**
+     * sets the Data into the tableView, to display data in the gui
+     * @param dataList Arraylist filled with Task objects, received from backend
+     */
+    public void setTableData(ArrayList<Task> dataList) {
+
+        ObservableList<Task> data = FXCollections.observableArrayList(dataList);
+
+        tableView.setItems(data);
+    }
+
+
 }

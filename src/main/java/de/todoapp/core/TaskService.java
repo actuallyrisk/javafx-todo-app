@@ -27,9 +27,9 @@ public class TaskService {
      */
     public void loadFromDB() {
         // Retrieve all tasks from the database as a 2D array of strings
-        String[][] data = Database.getAllTasks();
+        ArrayList<String[]> data = Database.getAllTasks();
         // Clear the current list of tasks
-        tasks.clear();
+
         // Iterate over the database data
         for (String[] task : data) {
             // Create a new Task object from each row of database data, converting values from strings to their respective data types using the State and Priority enums and the Integer.parseInt() and Date.valueOf() methods
@@ -58,7 +58,7 @@ public class TaskService {
      * @return an ArrayList of tasks with the specified category.
      */
     public final ArrayList<Task> getTasksByCategory(String category) {
-        return new ArrayList<>( tasks.stream().filter((task -> task.getCategory() == category)).toList());
+        return new ArrayList<>( tasks.stream().filter((task -> task.getCategory().equals(category) )).toList());
     }
 
     /**

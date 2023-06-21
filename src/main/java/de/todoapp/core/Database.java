@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
     private static final Logger logger = LogManager.getLogger(Database.class);
@@ -159,8 +160,8 @@ public class Database {
         }
     }
 
-    public static String[][] getAllTasks() {
-        String[][] tasks = null;
+    public static ArrayList<String[]> getAllTasks() {
+        ArrayList<String[]> result = null;
         try {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
@@ -171,26 +172,30 @@ public class Database {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Determine the number of tasks in the result set
+            /*
             int rowCount = 0;
             while (resultSet.next()) {
                 rowCount++;
             }
             resultSet.beforeFirst();
-
+            */
             // Create an array to hold the tasks
-            tasks = new String[rowCount][8];
+            result = new ArrayList<String[]>();
 
             // Fill the array with the tasks
             int i = 0;
             while (resultSet.next()) {
-                tasks[i][0] = Integer.toString(resultSet.getInt("id"));
-                tasks[i][1] = resultSet.getString("name");
-                tasks[i][2] = resultSet.getString("description");
-                tasks[i][3] = Integer.toString(resultSet.getInt("state"));
-                tasks[i][4] = resultSet.getString("due_date");
-                tasks[i][5] = Integer.toString(resultSet.getInt("priority"));
-                tasks[i][6] = Integer.toString(resultSet.getInt("points"));
-                tasks[i][7] = resultSet.getString("category");
+                String[] tasks=new String[8];
+                tasks[0] = Integer.toString(resultSet.getInt("id"));
+                tasks[1] = resultSet.getString("name");
+                tasks[2] = resultSet.getString("description");
+                tasks[3] = Integer.toString(resultSet.getInt("state"));
+                tasks[4] = resultSet.getString("due_date");
+                tasks[5] = Integer.toString(resultSet.getInt("priority"));
+                tasks[6] = Integer.toString(resultSet.getInt("points"));
+                tasks[7] = resultSet.getString("category");
+
+                result.add(tasks);
                 i++;
             }
 
@@ -203,7 +208,7 @@ public class Database {
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-        return tasks;
+        return result;
     }
 
     public static String[] getTaskById(int id) {

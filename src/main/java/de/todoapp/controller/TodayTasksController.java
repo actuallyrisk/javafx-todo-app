@@ -1,5 +1,7 @@
 package de.todoapp.controller;
 
+import de.todoapp.core.Task;
+import de.todoapp.core.TaskService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -7,6 +9,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Controller class for the Today Tasks views.
@@ -39,11 +48,21 @@ public class TodayTasksController extends BaseController {
     @FXML
     private Button AddTask;
 
+
+
+
+
+
     /**
      * Initialization logic for this controller.
      */
+
     @Override
     public void initialize() {
+
+
+
+
         super.initialize();
     }
 
@@ -82,6 +101,9 @@ public class TodayTasksController extends BaseController {
         // Switch the scene to the "AllTasks" scene
         switchScene("AllTasks");
     }
+
+
+
 
 
 }
