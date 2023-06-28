@@ -12,7 +12,7 @@ public class Database {
     private static Connection connection;
     private static PreparedStatement preparedStatement;
 
-    public static void createDatabase() {
+    public static synchronized void createDatabase() {
         try {
             // Check if the todo.sqlite file exists
             File dbFile = new File("todo.sqlite");

@@ -9,7 +9,7 @@ import java.util.*;
 public class TaskService {
 
     /**
-     * List of tasks managed by the task manager.
+     * List of tasks managed by the task service.
      */
     private ArrayList<Task> tasks;
 

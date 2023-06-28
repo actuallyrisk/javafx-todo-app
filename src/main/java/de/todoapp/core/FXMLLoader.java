@@ -61,7 +61,7 @@ public class FXMLLoader implements Runnable {
      * @param fxmlFolderPath the path to the folder containing the FXML files
      */
 
-    public static String[] loadFxmlFiles(String fxmlFolderPath, double width, double height) {
+    public static synchronized String[] loadFxmlFiles(String fxmlFolderPath, double width, double height) {
         try {
             // Get a list of FXML files in the specified folder
             String[] fxmlFiles = getResourceListing(fxmlFolderPath);

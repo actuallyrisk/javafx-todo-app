@@ -58,7 +58,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        // Loads the database and the FXML files concurrently
+        // Loads the database and the FXML files at the same time.
         DatabaseLoader databaseLoader = new DatabaseLoader();
         Thread databaseThread = new Thread(databaseLoader);
         databaseThread.start();
