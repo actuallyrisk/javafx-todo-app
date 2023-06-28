@@ -12,15 +12,20 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import de.todoapp.core.TaskService;
+
 import java.sql.Date;
 import java.time.LocalDate;
+
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
-
-
+/**
+ * Controller class for the Add Task view.
+ *
+ * @author Luis Kronenbitter
+ * @version 1.0
+ */
 public class AddTaskController {
-
     private static final Logger LOGGER = LogManager.getLogger(AddTaskController.class);
 
     @FXML
@@ -36,18 +41,16 @@ public class AddTaskController {
     private ChoiceBox<Priority> choiceBoxPriority;
 
     @FXML
-    private  Label errorLabel;
+    private Label errorLabel;
 
     String name, description;
     State choiceStatus;
     Priority choicePriority;
 
-
     /**
-     * initializes the AddTaskController:
-     * -the choiceboxes are filled with the enums "priority" and "state"
+     * Initialization logic for this controller.
      */
-    public void initialize(){
+    public void initialize() {
         ObservableList<State> state = FXCollections.observableArrayList(State.values());
         choiceBoxStatus.setItems(state);
 
@@ -55,69 +58,85 @@ public class AddTaskController {
         choiceBoxPriority.setItems(priority);
 
         errorLabel.setVisible(false);
-
-        }
-
-
-
+    }
 
     /**
-     * @param e parameter for eventhandler
-     * closes the "add Task" window without sending any data to the backend
+     * Cancels the action and closes the current stage.
+     *
+     * @param event the action event triggered by the cancel button
      */
     @FXML
-    public void cancel(ActionEvent e){
+    public void cancel(ActionEvent event) {
+        // Hide the error label
         errorLabel.setVisible(false);
-        closeStage(e);
+
+        // Close the current stage
+        closeStage(event);
     }
 
     /**
-     * @param e parameter for eventhandler
-     * when the button "finish" is clicked:
-     *         - sends the input data to the backend/ adding a task in the database
-     *          -closing the window
-     *          -Checks the Userinput, and blocks the process, if the fields are not properly filled
+     * Finishes the action and performs the necessary operations based on the user input.
+     *
+     * @param event the action event triggered by the finish button
      */
     @FXML
-    public void finish(ActionEvent e){
+    public void finish(ActionEvent event) {
+        name = textName.getText();
+        description = textDescription.getText();
+        choiceStatus = choiceBoxStatus.getValue();
+        choicePriority = choiceBoxPriority.getValue();
 
-            name=textName.getText();
-            description=textDescription.getText();
-            choiceStatus=choiceBoxStatus.getValue();
-            choicePriority=choiceBoxPriority.getValue();
+        if (name == null || description == null || choicePriority == null || choiceStatus == null) {
+            clearAddTaskWindow();
 
-            if (name.equals(null) || description.equals(null) || choicePriority == null || choiceStatus == null) {
-                clearAddTaskWindow();
-                errorLabel.setVisible(true);
-                e.consume();
-            }
-            else {
+            // Display the error label
+            errorLabel.setVisible(true);
 
-                TaskService task = new TaskService();
-                Date date = Date.valueOf(LocalDate.now());
+            // Consume the event to prevent further processing
+            event.consume();
+        } else {
+            TaskService taskService = new TaskService();
+            Date date = Date.valueOf(LocalDate.now().plusDays(1));
 
-                task.addTask(name, description, choiceStatus, date, choicePriority, 10, "random");
-                clearAddTaskWindow();
-                closeStage(e);
-            }
+            taskService.addTask(name, description, choiceStatus, date, choicePriority, 10, "random");
+            clearAddTaskWindow();
+
+            // Close the current stage
+            closeStage(event);
+        }
     }
 
     /**
-     * helper function for the actions triggered by the finish button/ necessary for closing the "add Task" window
-     * @param event parameter for eventhandler
+     * Closes the current stage and performs necessary cleanup.
+     *
+     * @param event the action event triggered by the close button
      */
     private void closeStage(ActionEvent event) {
-        Node source = (Node)  event.getSource();
-        Stage stage  = (Stage) source.getScene().getWindow();
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+
+        // Clear the add task window fields
         clearAddTaskWindow();
+
+        // Close the current stage
         stage.close();
     }
-    private void clearAddTaskWindow(){
+
+    /**
+     * Clears the fields of the add task window.
+     * This method is called to reset the input fields after completing an action.
+     */
+    private void clearAddTaskWindow() {
+        // Clear the task name field
         textName.clear();
+
+        // Clear the task description field
         textDescription.clear();
+
+        // Reset the selected priority value
         choiceBoxPriority.setValue(null);
+
+        // Reset the selected status value
         choiceBoxStatus.setValue(null);
     }
-
-
 }

@@ -1,15 +1,16 @@
 package de.todoapp.controller;
 
 import de.todoapp.config.AppConfig;
-import de.todoapp.core.Priority;
-import de.todoapp.core.State;
-import de.todoapp.core.Task;
-import de.todoapp.core.TaskService;
+import de.todoapp.core.*;
+import de.todoapp.utils.MapUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -22,11 +23,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.sql.Date;
+import java.util.Map;
 import java.util.Objects;
-
 
 /**
  * This is the base controller class that provides common functionality for all
@@ -55,36 +58,33 @@ public class BaseController {
     @FXML
     protected Pane paneHeader;
 
+    @FXML
+    protected TableView<Task> tableView;
 
     @FXML
-    private TableView<Task> tableView;
+    protected TableColumn<Task, String> name;
 
     @FXML
-    private TableColumn<Task, String> name;
+    protected TableColumn<Task, String> description;
 
     @FXML
-    private TableColumn<Task, String> description;
+    protected TableColumn<Task, State> state;
 
     @FXML
-    private TableColumn<Task, State> state;
+    protected TableColumn<Task, Date> dueDate;
 
     @FXML
-    private TableColumn<Task, Date> dueDate;
+    protected TableColumn<Task, Priority> priority;
 
     @FXML
-    private TableColumn<Task, Priority> priority;
+    protected TableColumn<Task, Integer> points;
 
     @FXML
-    private TableColumn<Task, Integer> points;
+    protected TableColumn<Task, String> category;
 
-    @FXML
-    private TableColumn<Task, String> category;
+    protected TaskService taskService = new TaskService();
 
-
-
-    TaskService ts=new TaskService();
-
-    Task taskToDelete=null;
+    private Task taskToDelete = null;
 
     /**
      * Protected constructor for the BaseController class.
@@ -111,6 +111,7 @@ public class BaseController {
      */
     public void initialize() {
         Scene scene = themeSwitcherBtn.getScene();
+
         if (scene == null) {
             // Button is not yet added to the scene, wait until the scene is available
             themeSwitcherBtn.sceneProperty().addListener((observable, oldValue, newValue) -> {
@@ -127,7 +128,7 @@ public class BaseController {
         gaussianBlur.setRadius(3);
         paneHeader.setEffect(gaussianBlur);
 
-
+        // Set cell value factories for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -136,18 +137,15 @@ public class BaseController {
         dueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         points.setCellValueFactory(new PropertyValueFactory<>("points"));
 
-        ts.loadFromDB();
-        setTableData(ts.getTasksByCategory("random"));
+        // Load tasks from the database
+        taskService.loadFromDB();
 
+        // Set up click event for the table view
         tableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1) { // Check for single click
-                Task selectedTask = tableView.getSelectionModel().getSelectedItem();
-                // Here, you can save the selected Person object to a variable or perform any desired action
-                taskToDelete=selectedTask;
+            if (event.getClickCount() == 1) {
+                taskToDelete = tableView.getSelectionModel().getSelectedItem();
             }
         });
-
-
     }
 
     /**
@@ -185,37 +183,33 @@ public class BaseController {
         // Setting the theme for all scenes
         SCENE_STORAGE.forEach((key, scene) -> {
 
+            if (!key.equals("AddTask")) {
+                if (appConfig.isDarkMode()) {
+                    // Adding the appropriate style
+                    scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
+                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
 
-            //prevents from scanning the "AddTask" hashmap-entry, the Scene AddTask will crash the whole Themeswitchfunctionality, because this Scene differs a lot from the other basic scenes
-            //if a dark mode for the AddTask Popup is required, there  must be created a separated specific method for this
-            if(!key.equals("AddTask")){
-            if (appConfig.isDarkMode()) {
-                // Adding the appropriate style
-                scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+                    // Adjust the text accordingly
+                    Text text = (Text) scene.lookup("#themeSwitcherText");
+                    text.setText("Too light? Switch to");
 
-                // Adjust the text accordingly
-                Text text = (Text) scene.lookup("#themeSwitcherText");
-                text.setText("Too light? Switch to");
+                    // Adjust the button accordingly
+                    Button button = (Button) scene.lookup("#themeSwitcherBtn");
+                    button.setText("dark mode");
+                } else {
+                    // Adding the appropriate style
+                    scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
+                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
 
-                // Adjust the button accordingly
-                Button button = (Button) scene.lookup("#themeSwitcherBtn");
-                button.setText("dark mode");
+                    // Adjust the text accordingly
+                    Text text = (Text) scene.lookup("#themeSwitcherText");
+                    text.setText("Too dark? Switch to");
+
+                    // Adjust the button accordingly
+                    Button button = (Button) scene.lookup("#themeSwitcherBtn");
+                    button.setText("light mode");
+                }
             } else {
-                // Adding the appropriate style
-                scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
-                scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-
-                // Adjust the text accordingly
-                Text text = (Text) scene.lookup("#themeSwitcherText");
-                text.setText("Too dark? Switch to");
-
-                // Adjust the button accordingly
-                Button button = (Button) scene.lookup("#themeSwitcherBtn");
-                button.setText("light mode");
-            }
-        }
-        else {
                 if (appConfig.isDarkMode()) {
                     // Adding the appropriate style
                     scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
@@ -275,19 +269,14 @@ public class BaseController {
         // Retrieve the stage object from the BaseController instance
         Stage stage = controller.getStage();
 
-
-
         // Set the scene of the stage based on the given key
         stage.setScene(controller.getScene(key));
-
 
         // Show the stage
         stage.show();
 
-
         // Log an info message indicating that the scene has been changed
         LOGGER.debug("Scene changed to " + key + " scene.");
-
     }
 
     /**
@@ -317,76 +306,117 @@ public class BaseController {
         return SCENE_STORAGE.get(key);
     }
 
+    /**
+     * Reloads all scenes in the SCENE_STORAGE HashMap by reloading their corresponding FXML documents.
+     */
+    public static void reloadScenes() {
+        // Create a temporary HashMap to store the newly loaded scenes
+        HashMap<String, Scene> updatedScenes = new HashMap<>();
+
+        // Iterate over each entry (key-scene pair) in the HashMap
+        for (Map.Entry<String, Scene> entry : SCENE_STORAGE.entrySet()) {
+            String key = entry.getKey();
+            Scene scene = entry.getValue();
+
+            try {
+                // Reload the FXML document
+                Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(Main.FXML_FOLDER_PATH + key + ".fxml")));
+
+                // Update the temporary HashMap with the newly loaded Scene
+                updatedScenes.put(key, new Scene(root, scene.getWidth(), scene.getHeight()));
+            } catch (IOException e) {
+                LOGGER.error("Error while reloading scene: " + key);
+                LOGGER.error(e.toString());
+            }
+        }
+
+        // Update the original HashMap with the newly loaded scenes
+        SCENE_STORAGE.clear();
+        SCENE_STORAGE.putAll(updatedScenes);
+
+        // Logs a debug message that all scenes have been reloaded
+        LOGGER.debug("All scenes have been reloaded.");
+    }
 
     /**
-     * executes the following actions, when the button "add Task" is clicked:
-     * -loading scene, which was previously created in main class
-     * -connecting the scene to css
-     * -set the right css for the right theme
-     * -set the scene in a new stage, but in modality mode
-     * @param event eventhandler parameter
+     * Handles the event when the add task button is clicked.
+     * It opens the "AddTask" scene in a new stage, allowing the user to add a new task.
+     * It also handles the automatic theme setting for the "AddTask" window based on the app configuration.
+     *
+     * @param event The action event generated by the button click.
      */
     @FXML
     public void addTaskWithButton(ActionEvent event) {
-
-        Scene scene =getScene("AddTask");
+        Scene scene = getScene("AddTask");
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/style.css")).toExternalForm());
 
-
-        //code block for setting automatically the theme of the addTask-window
-
+        // Automatic theme setting for the addTask-window
         if (appConfig.isDarkMode()) {
             scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-
-
-            // Saving the mode in the app config
+            // Saving the dark mode in the app config
             appConfig.setDarkMode(true);
         } else {
             scene.getStylesheets().remove(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/light.css")).toExternalForm());
-
-
-            // Saving the mode in the app config
+            // Saving the light mode in the app config
             appConfig.setDarkMode(false);
         }
 
+        Stage stage = new Stage();
 
-        Stage stage =new Stage();
-
-        //Modality blocks the interaction with other stage until the current stage will be closed
+        // Modality blocks the interaction with other stages
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-        stage.showAndWait();    //TODO Unterschied zwischen showAndWait & show herausfinden
 
-        ts.loadFromDB();
-        setTableData(ts.getTasksByCategory("random"));
+        // Show the stage and wait for it to be closed
+        stage.showAndWait();
 
-    }
+        taskService.loadFromDB();
 
+        String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
 
+        reloadScenes();
 
-
-
-
-
-
-    @FXML
-    public void deleteTaskWithButton(ActionEvent event){
-       ts.deleteTask(taskToDelete);
+        switchScene(key);
     }
 
     /**
-     * sets the Data into the tableView, to display data in the gui
-     * @param dataList Arraylist filled with Task objects, received from backend
+     * Deletes the selected task when the delete button is clicked.
+     * The task is retrieved from the selected row in the table view.
+     * After deleting the task, the scenes are reloaded, and the scene is switched back to the previously active scene.
+     *
+     * @param event the action event triggered by the delete button
      */
-    public void setTableData(ArrayList<Task> dataList) {
+    @FXML
+    public void deleteTaskWithButton(ActionEvent event) {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
 
-        ObservableList<Task> data = FXCollections.observableArrayList(dataList);
+        if (selectedTask != null) {
+            // Delete the selected task
+            taskService.deleteTask(selectedTask);
 
-        tableView.setItems(data);
+            // Get the key of the previously active scene
+            String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
 
+            // Reload the scenes to reflect the updated task list
+            reloadScenes();
+
+            // Switch the scene back to the previously active scene
+            switchScene(key);
+        }
     }
 
+    /**
+     * Sets the data in the table view with the provided list of tasks.
+     *
+     * @param dataList the list of tasks to be displayed in the table view
+     */
+    public void setTableData(ArrayList<Task> dataList) {
+        // Convert the list to an observable list
+        ObservableList<Task> data = FXCollections.observableArrayList(dataList);
 
+        // Set the observable list as the data source for the table view
+        tableView.setItems(data);
+    }
 }

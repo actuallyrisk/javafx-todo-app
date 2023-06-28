@@ -1,10 +1,14 @@
 package de.todoapp.core;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
  * This class represents a task manager that allows users to manage a list of tasks.
+ *
+ * @author Anton Horn
+ * @version 1.0
  */
 public class TaskService {
 
@@ -22,14 +26,12 @@ public class TaskService {
 
     /**
      * Method to load tasks from a database.
-     *
-     * @return void
      */
     public void loadFromDB() {
         // Retrieve all tasks from the database as a 2D array of strings
         ArrayList<String[]> data = Database.getAllTasks();
         // Clear the current list of tasks
-            tasks.clear();
+        tasks.clear();
         // Iterate over the database data
         for (String[] task : data) {
             // Create a new Task object from each row of database data, converting values from strings to their respective data types using the State and Priority enums and the Integer.parseInt() and Date.valueOf() methods
@@ -47,8 +49,12 @@ public class TaskService {
      */
     final Task getTaskByName(String name) {
 
-       return tasks.stream().filter((task -> name.equals(task.getName()))).findFirst().get();
+        return tasks.stream().filter((task -> name.equals(task.getName()))).findFirst().get();
 
+    }
+
+    public final ArrayList<Task> getAllTasks() {
+        return new ArrayList<>(tasks);
     }
 
     /**
@@ -58,7 +64,7 @@ public class TaskService {
      * @return an ArrayList of tasks with the specified category.
      */
     public final ArrayList<Task> getTasksByCategory(String category) {
-        return new ArrayList<>( tasks.stream().filter((task -> task.getCategory().equals(category) )).toList());
+        return new ArrayList<>(tasks.stream().filter((task -> task.getCategory().equals(category))).toList());
     }
 
     /**
@@ -68,7 +74,49 @@ public class TaskService {
      * @return an ArrayList of tasks with the specified state.
      */
     public final ArrayList<Task> getTasksByState(State state) {
-        return new ArrayList<>( tasks.stream().filter((task -> task.getState() == state)).toList());
+        return new ArrayList<>(tasks.stream().filter((task -> task.getState() == state)).toList());
+    }
+
+    /**
+     * Retrieves tasks with the specified priority.
+     *
+     * @param priority the priority of the tasks to retrieve
+     * @return an ArrayList containing tasks with the specified priority
+     */
+    public final ArrayList<Task> getTaskByPriority(Priority priority) {
+        return new ArrayList<>(tasks.stream().filter((task -> task.getPriority() == priority)).toList());
+    }
+
+    /**
+     * Retrieves tasks with a future due date.
+     *
+     * @return an ArrayList containing tasks with a due date after the current date
+     */
+    public final ArrayList<Task> getTasksWithFutureDueDate() {
+        LocalDate currentDate = LocalDate.now();
+
+        return new ArrayList<>(tasks.stream()
+                .filter(task -> {
+                    LocalDate dueDate = LocalDate.parse(task.getDueDate().toString());
+                    return dueDate.isAfter(currentDate);
+                })
+                .toList());
+    }
+
+    /**
+     * Retrieves tasks due today.
+     *
+     * @return an ArrayList containing tasks with a due date equal to the current date
+     */
+    public ArrayList<Task> getTasksDueToday() {
+        LocalDate currentDate = LocalDate.now();
+
+        return new ArrayList<>(tasks.stream()
+                .filter(task -> {
+                    LocalDate dueDate = LocalDate.parse(task.getDueDate().toString());
+                    return dueDate.isEqual(currentDate);
+                })
+                .toList());
     }
 
     /**
@@ -104,6 +152,5 @@ public class TaskService {
         // Remove the task from the tasks list
         tasks.remove(task);
     }
-
 }
 

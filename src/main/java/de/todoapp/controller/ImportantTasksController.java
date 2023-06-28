@@ -1,13 +1,17 @@
 package de.todoapp.controller;
 
+import de.todoapp.core.Priority;
+import de.todoapp.core.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+
 /**
- * Controller class for the Important Tasks views.
+ * Controller class for the Important Tasks view.
  * Extends {@link BaseController}.
  *
  * @author Tobias Metzger
@@ -31,6 +35,13 @@ public class ImportantTasksController extends BaseController {
     @Override
     public void initialize() {
         super.initialize();
+
+        ArrayList<Task> combinedTasks = new ArrayList<>();
+
+        combinedTasks.addAll(taskService.getTaskByPriority(Priority.HIGH));
+        combinedTasks.addAll(taskService.getTaskByPriority(Priority.VERY_HIGH));
+
+        setTableData(combinedTasks);
     }
 
     /**

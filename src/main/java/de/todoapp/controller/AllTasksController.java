@@ -31,6 +31,8 @@ public class AllTasksController extends BaseController {
     @Override
     public void initialize() {
         super.initialize();
+
+        setTableData(taskService.getAllTasks());
     }
 
     /**

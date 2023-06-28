@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Controller class for the Scheduled Tasks views.
+ * Controller class for the Scheduled Tasks view.
  * Extends {@link BaseController}.
  *
  * @author Tobias Metzger
@@ -31,6 +31,8 @@ public class ScheduledTasksController extends BaseController {
     @Override
     public void initialize() {
         super.initialize();
+
+        setTableData(taskService.getTasksWithFutureDueDate());
     }
 
     /**
