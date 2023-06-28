@@ -81,7 +81,10 @@ public class BaseController {
     private TableColumn<Task, String> category;
 
 
+
     TaskService ts=new TaskService();
+
+    Task taskToDelete=null;
 
     /**
      * Protected constructor for the BaseController class.
@@ -135,6 +138,14 @@ public class BaseController {
 
         ts.loadFromDB();
         setTableData(ts.getTasksByCategory("random"));
+
+        tableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) { // Check for single click
+                Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+                // Here, you can save the selected Person object to a variable or perform any desired action
+                taskToDelete=selectedTask;
+            }
+        });
 
 
     }
@@ -353,6 +364,18 @@ public class BaseController {
 
     }
 
+
+
+
+
+
+
+
+    @FXML
+    public void deleteTaskWithButton(ActionEvent event){
+       ts.deleteTask(taskToDelete);
+    }
+
     /**
      * sets the Data into the tableView, to display data in the gui
      * @param dataList Arraylist filled with Task objects, received from backend
@@ -362,6 +385,7 @@ public class BaseController {
         ObservableList<Task> data = FXCollections.observableArrayList(dataList);
 
         tableView.setItems(data);
+
     }
 
 

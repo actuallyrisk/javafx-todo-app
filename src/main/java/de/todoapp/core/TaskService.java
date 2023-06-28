@@ -29,7 +29,7 @@ public class TaskService {
         // Retrieve all tasks from the database as a 2D array of strings
         ArrayList<String[]> data = Database.getAllTasks();
         // Clear the current list of tasks
-
+            tasks.clear();
         // Iterate over the database data
         for (String[] task : data) {
             // Create a new Task object from each row of database data, converting values from strings to their respective data types using the State and Priority enums and the Integer.parseInt() and Date.valueOf() methods

@@ -30,9 +30,7 @@ public class Main extends Application {
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
-    static TaskService ts=new TaskService();
 
-    TableView<Task> tableView=new TableView<Task>();
 
 
     /**
