@@ -43,16 +43,10 @@
     -fx-border-color: rgb(182, 182, 182);
 }
 
-.theme-switcher-container {
-    -fx-border-color: rgb(182, 182, 182);
-    -fx-text-fill: rgb(182, 182, 182);
-}
 
-.theme-switcher-text {
-    -fx-text-fill: rgb(182, 182, 182);
-    -fx-fill: rgb(182, 182, 182);
-}
-
+/**
+ * Theme Switcher
+ */
 .theme-switcher {
     -fx-text-fill: rgb(200, 200, 200);
 }
@@ -61,10 +55,20 @@
     -fx-text-fill: rgb(240, 240, 240);
 }
 
-.labelAddTask {
-    -fx-text-fill: rgb(200, 200, 200);
+.theme-switcher-text {
+    -fx-text-fill: rgb(182, 182, 182);
+    -fx-fill: rgb(182, 182, 182);
 }
 
+.theme-switcher-container {
+    -fx-border-color: rgb(182, 182, 182);
+    -fx-text-fill: rgb(182, 182, 182);
+}
+
+
+/**
+ * Buttons
+ */
 .buttonAddTask, .buttonRemoveTask {
     -fx-background-color: rgb(37, 37, 37);
 }
@@ -81,10 +85,10 @@
     -fx-background-image: url('../images/icons/dark/trash-solid.png');
 }
 
-.errorLabel {
-    -fx-text-fill: rgb(255, 231, 0);
-}
 
+/**
+ * Tasks Table Styling
+ */
 .tasks .label {
     -fx-text-fill: rgb(255, 255, 255);
 }
@@ -126,4 +130,65 @@
 
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
     -fx-background-color: rgb(182, 182, 182);
+}
+
+
+/**
+ * Add Task Styling
+ */
+.add-task-h1, .add-task-p {
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.add-task-cancel, .add-task-save {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-background-color: rgb(55, 55, 55);
+}
+
+.add-task-cancel:hover, .add-task-save:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.add-task-choice {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-mark-color: rgb(255, 255, 255);
+}
+
+.add-task-text {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.add-task-choice:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.add-task-choice > .label {
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.add-task-choice .context-menu {
+    -fx-background-color: rgb(55, 55, 55);
+}
+
+.add-task-choice .menu-item:focused {
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.add-task-choice .menu-item:hover {
+    -fx-cursor: hand;
+}
+
+.add-task-choice .menu-item > .label {
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.add-task-choice .menu-item:focused > .label {
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.errorLabel {
+    -fx-text-fill: rgb(255, 231, 0);
 }

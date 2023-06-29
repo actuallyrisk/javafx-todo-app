@@ -81,14 +81,12 @@ public class AddTaskController {
      */
     @FXML
     public void finish(ActionEvent event) {
-        name = textName.getText();
-        description = textDescription.getText();
+        name = textName.getText() == null ? "" : textName.getText();
+        description = textDescription.getText() == null ? "" : textDescription.getText();
         choiceStatus = choiceBoxStatus.getValue();
         choicePriority = choiceBoxPriority.getValue();
 
-        if (name == null || description == null || choicePriority == null || choiceStatus == null) {
-            clearAddTaskWindow();
-
+        if (name.isEmpty() || description.isEmpty()|| choicePriority == null || choiceStatus == null) {
             // Display the error label
             errorLabel.setVisible(true);
 

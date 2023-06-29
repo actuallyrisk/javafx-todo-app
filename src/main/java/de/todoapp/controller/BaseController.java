@@ -8,15 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -24,11 +21,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.sql.Date;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -42,6 +37,8 @@ public class BaseController {
     private static BaseController instance;
 
     protected static AppConfig appConfig = AppConfig.getInstance();
+
+    protected static FXMLLoader fxmlLoader = FXMLLoader.getInstance();
 
     private Stage stage;
 
@@ -276,7 +273,7 @@ public class BaseController {
         stage.show();
 
         // Log an info message indicating that the scene has been changed
-        LOGGER.debug("Scene changed to " + key + " scene.");
+        LOGGER.debug("Scene changed to '{}' scene.", key);
     }
 
     /**
@@ -290,6 +287,7 @@ public class BaseController {
         if (!SCENE_STORAGE.containsKey(key)) {
             // Add the scene to the scene storage with the given key
             SCENE_STORAGE.put(key, scene);
+
             // Log a debug message indicating that a new scene was added for the key
             LOGGER.debug("A new scene was added for key: " + key);
         }
@@ -307,35 +305,41 @@ public class BaseController {
     }
 
     /**
-     * Reloads all scenes in the SCENE_STORAGE HashMap by reloading their corresponding FXML documents.
+     * Removes the scene with the specified key from the SCENE_STORAGE HashMap.
+     *
+     * @param key the key of the scene to be removed
      */
-    public static void reloadScenes() {
-        // Create a temporary HashMap to store the newly loaded scenes
-        HashMap<String, Scene> updatedScenes = new HashMap<>();
+    public void removeScene(String key) {
+        // Remove the scene from the scene storage with the given key
+        SCENE_STORAGE.remove(key);
 
-        // Iterate over each entry (key-scene pair) in the HashMap
-        for (Map.Entry<String, Scene> entry : SCENE_STORAGE.entrySet()) {
-            String key = entry.getKey();
-            Scene scene = entry.getValue();
+        // Log a debug message indicating that the scene was removed
+        LOGGER.debug("Scene '{}' has been removed.", key);
+    }
 
-            try {
-                // Reload the FXML document
-                Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(appConfig.getFxmlFolderPath() + key + ".fxml")));
+    /**
+     * Returns the scene storage.
+     *
+     * @return the scene storage
+     */
+    public HashMap<String, Scene> getSceneStorage() {
+        return SCENE_STORAGE;
+    }
 
-                // Update the temporary HashMap with the newly loaded Scene
-                updatedScenes.put(key, new Scene(root, scene.getWidth(), scene.getHeight()));
-            } catch (IOException e) {
-                LOGGER.error("Error while reloading scene: " + key);
-                LOGGER.error(e.toString());
-            }
-        }
-
-        // Update the original HashMap with the newly loaded scenes
+    /**
+     * Updates the SCENE_STORAGE HashMap with the provided updated scenes.
+     *
+     * @param updatedScenes the updated scenes to be stored in the SCENE_STORAGE HashMap
+     */
+    public void updateSceneStorage(HashMap<String, Scene> updatedScenes) {
+        // Remove all existing scenes from the scene storage
         SCENE_STORAGE.clear();
+
+        // Put the given scenes in the scene storage
         SCENE_STORAGE.putAll(updatedScenes);
 
-        // Logs a debug message that all scenes have been reloaded
-        LOGGER.debug("All scenes have been reloaded.");
+        // Log a debug message indicating that the scene storage was updated
+        LOGGER.debug("The scene storage has been updated.");
     }
 
     /**
@@ -367,6 +371,8 @@ public class BaseController {
 
         // Modality blocks the interaction with other stages
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle(appConfig.getTitle());
+        stage.setResizable(false);
         stage.setScene(scene);
 
         // Show the stage and wait for it to be closed
@@ -374,10 +380,13 @@ public class BaseController {
 
         taskService.loadFromDB();
 
+        // Get the key of the active scene
         String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
 
-        reloadScenes();
+        // Reload the scenes to reflect the updated task list
+        fxmlLoader.reload();
 
+        // Switch the scene to display the new task
         switchScene(key);
     }
 
@@ -400,7 +409,7 @@ public class BaseController {
             String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
 
             // Reload the scenes to reflect the updated task list
-            reloadScenes();
+            fxmlLoader.reload();
 
             // Switch the scene back to the previously active scene
             switchScene(key);

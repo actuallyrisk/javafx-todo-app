@@ -2,7 +2,7 @@
  *  Copyright (c) 2023
  *  JavaFX Todo App
  *
- *  Author:  Tobias Metzger
+ *  Author:  Luis Kronenbitter, Tobias Metzger
  *  Version: 1.0.0
  *  Since:   2023-05-20
  */
@@ -68,6 +68,10 @@
     -fx-padding: 8px;
 }
 
+
+/**
+ * Pane Header
+ */
 .pane-header {
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
@@ -84,11 +88,6 @@
     -fx-font-family: 'Roboto Regular', sans-serif;
     -fx-font-size: 16px;
     -fx-fill: rgb(255, 255, 255);
-}
-
-.theme-switcher-container {
-    -fx-border-style: solid none none none;
-    -fx-border-width: 1px;
 }
 
 .pane-header-today {
@@ -108,6 +107,10 @@
     -fx-background-image: url('../images/plane.png');
 }
 
+
+/**
+ * Theme Switcher
+ */
 .theme-switcher {
     -fx-background-color: transparent;
     -fx-font-family: 'Roboto Regular';
@@ -118,12 +121,15 @@
     -fx-cursor: hand;
 }
 
-.buttonQuitAddTask {
-    -fx-font-size: 12px;
-    -fx-background-radius: 0;
-    -fx-font-family: 'Minecraft Regular';
+.theme-switcher-container {
+    -fx-border-style: solid none none none;
+    -fx-border-width: 1px;
 }
 
+
+/**
+ * Buttons
+ */
 .buttonAddTask, .buttonRemoveTask {
     -fx-cursor: hand;
     -fx-background-repeat: no-repeat;
@@ -141,15 +147,18 @@
 .labelAddTask {
     -fx-font-size: 12px;
     -fx-background-radius: 4;
+    -fx-font-family: 'Roboto Regular', sans-serif;
+}
+
+.add-task-h1 {
+    -fx-font-size: 14px;
     -fx-font-family: 'Minecraft Regular', fantasy;
 }
 
-.errorLabel {
-    -fx-font-size: 10px;
-    -fx-background-radius: 4;
-    -fx-font-family: 'Minecraft Regular', fantasy;
-}
 
+/**
+ * Tasks Table Styling
+ */
 .tasks {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
@@ -200,4 +209,24 @@
 .table-view .virtual-flow .scroll-bar .decrement-button {
     -fx-opacity: 0;
     -fx-padding: 1;
+}
+
+
+/**
+ * Add Task Styling
+ */
+.add-task-cancel, .add-task-save {
+    -fx-font-size: 12px;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-font-family: 'Minecraft Regular', fantasy;
+}
+
+.add-task-cancel:hover, .add-task-save:hover {
+    -fx-cursor: hand;
+}
+
+.errorLabel {
+    -fx-font-size: 12px;
+    -fx-font-family: 'Roboto Regular', sans-serif;
 }

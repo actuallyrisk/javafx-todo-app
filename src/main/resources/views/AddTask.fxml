@@ -6,19 +6,25 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="289.0" maxWidth="350.0" minHeight="289" minWidth="302.0" prefHeight="289.0" prefWidth="302.0" styleClass="main" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.AddTaskController">
+<AnchorPane maxHeight="380.0" maxWidth="300.0" minHeight="380.0" minWidth="300.0" prefHeight="380.0" prefWidth="300.0" styleClass="main" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.AddTaskController">
    <children>
-      <Label layoutX="38.0" layoutY="70.0" styleClass="labelAddTask" text="Name" />
-      <Label layoutX="18.0" layoutY="115.0" styleClass="labelAddTask" text="Description" />
-      <Label layoutX="33.0" layoutY="156.0" prefHeight="17.0" prefWidth="43.0" styleClass="labelAddTask" text="State" />
-      <Label layoutX="33.0" layoutY="197.0" styleClass="labelAddTask" text="Priority" />
-      <TextField fx:id="textName" layoutX="131.0" layoutY="66.0" />
-      <TextField fx:id="textDescription" layoutX="131.0" layoutY="111.0" />
-      <Label fx:id="errorLabel" layoutX="65.0" layoutY="37.0" prefHeight="17.0" prefWidth="215.0" styleClass="errorLabel" text="!!!to continue, fill every field!!!" />
-      <Button layoutX="154.0" layoutY="243.0" mnemonicParsing="false" onAction="#cancel" styleClass="buttonQuitAddTask" text="Cancel" />
-      <Button layoutX="233.0" layoutY="243.0" mnemonicParsing="false" onAction="#finish" styleClass="buttonQuitAddTask" text="Finish" />
-      <ChoiceBox fx:id="choiceBoxStatus" layoutX="131.0" layoutY="152.0" prefWidth="150.0" styleClass="labelAddTask" />
-      <ChoiceBox fx:id="choiceBoxPriority" layoutX="131.0" layoutY="193.0" prefWidth="150.0" styleClass="labelAddTask" />
-      <Label fx:id="addTaskLabel" layoutX="89.0" layoutY="14.0" styleClass="labelAddTask" text="Please add a task" />
+      <Label layoutX="90.0" layoutY="26.0" styleClass="add-task-h1" text="Add a new task" />
+
+      <Label layoutX="15.0" layoutY="54.0" styleClass="add-task-p" text="Name" />
+      <TextField fx:id="textName" layoutX="15.0" layoutY="74.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
+
+      <Label layoutX="15.0" layoutY="114.0" styleClass="add-task-p" text="Description" />
+      <TextField fx:id="textDescription" layoutX="15.0" layoutY="134.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
+
+      <Label layoutX="15.0" layoutY="174.0" styleClass="add-task-p" text="State" />
+      <ChoiceBox fx:id="choiceBoxStatus" layoutX="15.0" layoutY="194.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-choice" />
+
+      <Label layoutX="15.0" layoutY="234.0" styleClass="add-task-p" text="Priority" />
+      <ChoiceBox fx:id="choiceBoxPriority" layoutX="15.0" layoutY="254.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-choice" />
+
+      <Label fx:id="errorLabel" layoutX="15.0" layoutY="304.0" styleClass="errorLabel" text="Please fill in all fields" />
+
+      <Button layoutX="15.0" layoutY="334.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="125.0" styleClass="add-task-cancel" text="Cancel" />
+      <Button layoutX="160.0" layoutY="334.0" mnemonicParsing="false" onAction="#finish" prefWidth="125.0" styleClass="add-task-save" text="Save" />
    </children>
 </AnchorPane>

@@ -37,13 +37,13 @@
                                     <Label text="Pretty empty here, huh?" />
                                  </placeholder>
                                 <columns>
-                                  <TableColumn fx:id="name" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Task" />
-                                  <TableColumn fx:id="description" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Description" />
-                                    <TableColumn fx:id="category" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Category" />
-                                    <TableColumn fx:id="priority" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Priority" />
-                                    <TableColumn fx:id="state" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="State" />
-                                    <TableColumn fx:id="dueDate" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Due at" />
-                                    <TableColumn fx:id="points" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" styleClass="columnHeader" text="Points" />
+                                   <TableColumn fx:id="name" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Task" />
+                                   <TableColumn fx:id="description" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Description" />
+                                   <TableColumn fx:id="category" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Category" />
+                                   <TableColumn fx:id="priority" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Priority" />
+                                   <TableColumn fx:id="state" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="State" />
+                                   <TableColumn fx:id="dueDate" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Due at" />
+                                   <TableColumn fx:id="points" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Points" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
