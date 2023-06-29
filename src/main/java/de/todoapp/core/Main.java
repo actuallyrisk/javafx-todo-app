@@ -1,36 +1,26 @@
 package de.todoapp.core;
 
-import de.todoapp.controller.AddTaskController;
+import de.todoapp.config.AppConfig;
 import de.todoapp.controller.BaseController;
-import de.todoapp.controller.TodayTasksController;
 import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Objects;
-import javafx.scene.control.TableView;
-
+/**
+ * The main class that serves as the entry point of the JavaFX application.
+ *
+ * @author Anton Horn, Tomislav Zecevic, Luis Kronenbitter, Tobias Metzger
+ * @version 1.0
+ */
 public class Main extends Application {
-    public static final double WIDTH = 860.;
-
-    public static final double HEIGHT = 560.;
-
-    public static final String TITLE = "To-Do Desktop";
-
-    public static final String FXML_FOLDER_PATH = "/views/";
-
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
+    private final BaseController baseController = BaseController.getInstance();
 
+    private final FXMLLoader fxmlLoader = FXMLLoader.getInstance();
 
+    private final AppConfig appConfig = AppConfig.getInstance();
 
     /**
      * Default constructor for the Main class.
@@ -57,33 +47,26 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-
-        // Loads the database and the FXML files at the same time.
+        // Loads the database
         DatabaseLoader databaseLoader = new DatabaseLoader();
         Thread databaseThread = new Thread(databaseLoader);
         databaseThread.start();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(WIDTH, HEIGHT, FXML_FOLDER_PATH);
-        Thread fxmlThread = new Thread(fxmlLoader);
-        fxmlThread.start();
-
         try {
             databaseThread.join();
-            fxmlThread.join();
         } catch (InterruptedException ex) {
             LOGGER.error(ex.getMessage());
         }
 
+        // Loads the FXML files
+        fxmlLoader.load();
+
         // Settings for the stage
-        stage.setTitle(TITLE);
+        stage.setTitle(appConfig.getTitle());
         stage.setResizable(false);
 
-
         // Setting the stage and switching to a scene
-        BaseController.getInstance().setStage(stage);
-        BaseController.getInstance().switchScene("TodayTasks");
-
+        baseController.setStage(stage);
+        baseController.switchScene("TodayTasks");
     }
-
-
 }

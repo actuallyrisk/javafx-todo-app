@@ -40,9 +40,8 @@
 .nav-button {
     -fx-font-size: 16px;
     -fx-background-radius: 0;
-    -fx-font-family: 'Minecraft Regular';
+    -fx-font-family: 'Minecraft Regular', fantasy;
 }
-
 
 .nav-button:hover {
     -fx-cursor: hand;
@@ -75,6 +74,18 @@
     -fx-background-size: 640 406.5;
 }
 
+.pane-header-h1 {
+    -fx-font-family: 'Minecraft Regular', fantasy;
+    -fx-font-size: 38px;
+    -fx-fill: rgb(255, 255, 255);
+}
+
+.pane-header-p {
+    -fx-font-family: 'Roboto Regular', sans-serif;
+    -fx-font-size: 16px;
+    -fx-fill: rgb(255, 255, 255);
+}
+
 .theme-switcher-container {
     -fx-border-style: solid none none none;
     -fx-border-width: 1px;
@@ -86,7 +97,7 @@
 }
 
 .pane-header-scheduled {
-    -fx-background-image: url('../images/desert.jpg');
+    -fx-background-image: url('../images/desert.png');
 }
 
 .pane-header-important {
@@ -113,23 +124,30 @@
     -fx-font-family: 'Minecraft Regular';
 }
 
+.buttonAddTask, .buttonRemoveTask {
+    -fx-cursor: hand;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
 .buttonAddTask {
-    -fx-font-size: 12px;
-    -fx-background-radius: 4;
-    -fx-font-family: 'Minecraft Regular';
+    -fx-background-size: 17 19;
+}
+
+.buttonRemoveTask {
+    -fx-background-size: 14 15;
 }
 
 .labelAddTask {
     -fx-font-size: 12px;
     -fx-background-radius: 4;
-    -fx-font-family: 'Minecraft Regular';
+    -fx-font-family: 'Minecraft Regular', fantasy;
 }
-
 
 .errorLabel {
     -fx-font-size: 10px;
     -fx-background-radius: 4;
-    -fx-font-family: 'Minecraft Regular';
+    -fx-font-family: 'Minecraft Regular', fantasy;
 }
 
 .tasks {
@@ -137,28 +155,18 @@
     -fx-background-color: transparent;
     -fx-background-insets: 0.0;
     -fx-font-size: 14px;
-    -fx-font-family: 'Roboto Regular';
+    -fx-font-family: 'Roboto Regular', sans-serif;
+}
+
+.tasks .column-header .label {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Roboto Regular', sans-serif;
 }
 
 .tasks .column-header {
     -fx-background-radius: 0;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
-}
-
-.tasks .column-header .label {
-    -fx-text-fill: white;
-}
-
-.tasks .column-header-background,
-.tasks .column-header-background .filler,
-.tasks .corner {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-}
-
-.tasks .table-cell {
-    -fx-text-fill: white;
 }
 
 .tasks .table-row-cell {
@@ -173,21 +181,23 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-insets: 0, 1;
-    -fx-text-fill: white;
 }
 
 .tasks .table-row-cell:empty {
     -fx-background-color: transparent;
 }
 
-.tasks .table-row-cell:filled:odd {
-    -fx-background-color: rgb(55, 55, 55);
+.table-view .virtual-flow .scroll-bar:vertical,
+.table-view .virtual-flow .scroll-bar:vertical .track,
+.table-view .virtual-flow .scroll-bar:vertical .track-background,
+.table-view .virtual-flow .scroll-bar:horizontal,
+.table-view .virtual-flow .scroll-bar:horizontal .track,
+.table-view .virtual-flow .scroll-bar:horizontal .track-background {
+    -fx-background-color: transparent;
 }
 
-.tasks:focused .table-row-cell:selected {
-    -fx-background-color: rgb(75, 75, 75);
-}
-
-.tasks .table-row-cell:hover {
-    -fx-background-color: rgb(75, 75, 75) !important;
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 1;
 }

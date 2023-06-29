@@ -42,19 +42,23 @@ public class TaskService {
     }
 
     /**
+     * Retrieves a list of all tasks.
+     *
+     * @return a new ArrayList containing all tasks
+     */
+    public final ArrayList<Task> getAllTasks() {
+        return new ArrayList<>(tasks);
+    }
+
+    /**
      * Method to get a task by name.
      *
      * @param name the name of the task to retrieve.
      * @return the task with the specified name, or null if no task is found.
      */
     final Task getTaskByName(String name) {
-
         return tasks.stream().filter((task -> name.equals(task.getName()))).findFirst().get();
 
-    }
-
-    public final ArrayList<Task> getAllTasks() {
-        return new ArrayList<>(tasks);
     }
 
     /**

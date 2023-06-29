@@ -41,7 +41,7 @@ import java.util.Objects;
 public class BaseController {
     private static BaseController instance;
 
-    protected AppConfig appConfig = AppConfig.getInstance();
+    protected static AppConfig appConfig = AppConfig.getInstance();
 
     private Stage stage;
 
@@ -124,9 +124,9 @@ public class BaseController {
         }
 
         // Add gaussian blur to paneHeader, as not possible via CSS
-        GaussianBlur gaussianBlur = new GaussianBlur();
-        gaussianBlur.setRadius(3);
-        paneHeader.setEffect(gaussianBlur);
+        // GaussianBlur gaussianBlur = new GaussianBlur();
+        // gaussianBlur.setRadius(5);
+        // paneHeader.setEffect(gaussianBlur);
 
         // Set cell value factories for each column
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -320,7 +320,7 @@ public class BaseController {
 
             try {
                 // Reload the FXML document
-                Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(Main.FXML_FOLDER_PATH + key + ".fxml")));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(appConfig.getFxmlFolderPath() + key + ".fxml")));
 
                 // Update the temporary HashMap with the newly loaded Scene
                 updatedScenes.put(key, new Scene(root, scene.getWidth(), scene.getHeight()));

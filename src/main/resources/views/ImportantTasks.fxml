@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.ImportantTasksController">
     <children>
         <AnchorPane layoutX="250.0" prefHeight="560.0" prefWidth="610.0">
@@ -25,11 +26,15 @@
                                     </styleClass>
                                 </Pane>
                                 <Pane prefHeight="212.0" prefWidth="610.0">
-                                    <Button layoutX="511.0" layoutY="166.0" mnemonicParsing="false" onAction="#addTaskWithButton" styleClass="buttonAddTask" text="Add Task" />
+                                    <Button layoutX="530.0" layoutY="165.0" maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" mnemonicParsing="false" onAction="#deleteTaskWithButton" prefHeight="26.0" prefWidth="26.0" styleClass="buttonRemoveTask" />
+                                    <Button layoutX="565.0" layoutY="165.0" maxHeight="26.0" maxWidth="26.0" minHeight="26.0" minWidth="26.0" mnemonicParsing="false" onAction="#addTaskWithButton" prefHeight="26.0" prefWidth="26.0" styleClass="buttonAddTask" />
                                 </Pane>
                                 <AnchorPane layoutX="-7.0" layoutY="208.0" prefHeight="357.0" prefWidth="624.0" styleClass="main">
                                     <children>
                                         <TableView fx:id="tableView" layoutX="12.0" layoutY="29.0" prefHeight="300.0" prefWidth="600.0" styleClass="tasks">
+                                            <placeholder>
+                                                <Label text="Pretty empty here, huh?"/>
+                                            </placeholder>
                                             <columns>
                                                 <TableColumn fx:id="name" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Task" styleClass="columnHeader" />
                                                 <TableColumn fx:id="description" editable="false" maxWidth="85.17" minWidth="85.17" prefWidth="85.17" resizable="false" text="Description" styleClass="columnHeader" />
