@@ -47,8 +47,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        // f
-        appConfig.loadConfig();
+
+        //We load the database and the fxml files at parallel to save some time at the startup.
 
         // Loads the database
         DatabaseLoader databaseLoader = new DatabaseLoader();
