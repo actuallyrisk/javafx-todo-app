@@ -22,7 +22,6 @@ public class RewardManager {
         allRewards.add(RewardFactory.createReward("SilverMedal"));
         allRewards.add(RewardFactory.createReward("BronzeMedal"));
         allRewards.add(RewardFactory.createReward("DiamondTrophy"));
-        allRewards.add(RewardFactory.createReward("PlatinumTrophy"));
         allRewards.add(RewardFactory.createReward("CrystalCup"));
         allRewards.add(RewardFactory.createReward("HonorCertificate"));
         allRewards.add(RewardFactory.createReward("ChampionTrophy"));

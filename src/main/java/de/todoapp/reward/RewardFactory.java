@@ -33,8 +33,6 @@ public class RewardFactory {
                 return new BronzeMedal();
             case "DiamondTrophy":
                 return new DiamondTrophy();
-            case "PlatinumTrophy":
-                return new PlatinumTrophy();
             case "CrystalCup":
                 return new CrystalCup();
             case "HonorCertificate":
