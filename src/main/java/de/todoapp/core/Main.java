@@ -55,14 +55,14 @@ public class Main extends Application {
         Thread databaseThread = new Thread(databaseLoader);
         databaseThread.start();
 
+        // Loads the FXML files
+        fxmlLoader.load();
+
         try {
             databaseThread.join();
         } catch (InterruptedException ex) {
             LOGGER.error(ex.getMessage());
         }
-
-        // Loads the FXML files
-        fxmlLoader.load();
 
         // Settings for the stage
         stage.setTitle(appConfig.getTitle());
