@@ -11,32 +11,67 @@ public class Database {
     private static final Logger logger = LogManager.getLogger(Database.class);
     private static Connection connection;
     private static PreparedStatement preparedStatement;
+    private static String databaseName;
 
-    public static synchronized void createDatabaseAndTables() {
+    public static synchronized void createDatabase(String dbName) {
         try {
-            // Check if the todo.sqlite file exists
-            File dbFile = new File("todo.sqlite");
+            databaseName = dbName;
+
+            // Check if the database file exists
+            File dbFile = new File(databaseName);
             boolean isNewDatabase = !dbFile.exists();
 
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
 
-            // If the database file did not exist, create the Tasks and Points tables
             if (isNewDatabase) {
                 // Create the tasks table
-                createTasksTable();
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
+                        "id INTEGER PRIMARY KEY," +
+                        "name TEXT NOT NULL," +
+                        "description TEXT," +
+                        "state INTEGER NOT NULL," +
+                        "due_date DATE NOT NULL," +
+                        "priority INTEGER NOT NULL," +
+                        "points INTEGER NOT NULL," +
+                        "category TEXT" +
+                        ")";
+                preparedStatement = connection.prepareStatement(createTableSQL);
+                preparedStatement.execute();
 
-                // Create the points table
-                createPointsTable();
+                logger.info("Database created successfully.");
             } else {
                 // Check if the tasks table exists
-                checkAndCreateTasksTable();
+                DatabaseMetaData metadata = connection.getMetaData();
+                ResultSet tables = metadata.getTables(null, null, "tasks", null);
+                boolean isTasksTableExists = tables.next();
+                tables.close();
 
-                // Check if the points table exists
-                checkAndCreatePointsTable();
+                if (!isTasksTableExists) {
+                    // Create the tasks table if it doesn't exist
+                    String createTableSQL = "CREATE TABLE tasks (" +
+                            "id INTEGER PRIMARY KEY," +
+                            "name TEXT NOT NULL," +
+                            "description TEXT," +
+                            "state INTEGER NOT NULL," +
+                            "due_date DATE NOT NULL," +
+                            "priority INTEGER NOT NULL," +
+                            "points INTEGER NOT NULL," +
+                            "category TEXT" +
+                            ")";
+                    preparedStatement = connection.prepareStatement(createTableSQL);
+                    preparedStatement.execute();
+
+                    logger.info("Tasks table created successfully.");
+                } else {
+                    logger.info("Database already exists.");
+                }
             }
 
-            // Close the connection
+            // Close the prepared statement and connection
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
             if (connection != null) {
                 connection.close();
             }

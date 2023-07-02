@@ -4,7 +4,7 @@ public class DatabaseLoader implements Runnable {
     @Override
     public void run() {
 
-        Database.createDatabaseAndTables();
+        Database.createDatabase("todo");
 
     }
 }
