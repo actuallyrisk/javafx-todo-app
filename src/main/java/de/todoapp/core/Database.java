@@ -171,14 +171,6 @@ public class Database {
             preparedStatement = connection.prepareStatement(selectSQL);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            // Determine the number of tasks in the result set
-            /*
-            int rowCount = 0;
-            while (resultSet.next()) {
-                rowCount++;
-            }
-            resultSet.beforeFirst();
-            */
             // Create an array to hold the tasks
             result = new ArrayList<String[]>();
 
