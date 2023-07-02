@@ -47,6 +47,9 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
+        // f
+        appConfig.loadConfig();
+
         // Loads the database
         DatabaseLoader databaseLoader = new DatabaseLoader();
         Thread databaseThread = new Thread(databaseLoader);

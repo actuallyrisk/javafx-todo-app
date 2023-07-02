@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -14,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import de.todoapp.core.TaskService;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -35,17 +35,19 @@ public class AddTaskController {
     private TextField textDescription;
 
     @FXML
+    private TextField textCategory;
+
+    @FXML
     private ChoiceBox<State> choiceBoxStatus;
 
     @FXML
     private ChoiceBox<Priority> choiceBoxPriority;
 
     @FXML
-    private Label errorLabel;
+    private DatePicker datePickerDueDate;
 
-    String name, description;
-    State choiceStatus;
-    Priority choicePriority;
+    @FXML
+    private Label errorLabel;
 
     /**
      * Initialization logic for this controller.
@@ -81,12 +83,14 @@ public class AddTaskController {
      */
     @FXML
     public void finish(ActionEvent event) {
-        name = textName.getText() == null ? "" : textName.getText();
-        description = textDescription.getText() == null ? "" : textDescription.getText();
-        choiceStatus = choiceBoxStatus.getValue();
-        choicePriority = choiceBoxPriority.getValue();
+        String name = textName.getText() == null ? "" : textName.getText();
+        String description = textDescription.getText() == null ? "" : textDescription.getText();
+        String category = textCategory.getText() == null ? "" : textCategory.getText();
+        State choiceStatus = choiceBoxStatus.getValue();
+        Priority choicePriority = choiceBoxPriority.getValue();
+        Date dueDate = datePickerDueDate.getValue() == null ? null : Date.valueOf(datePickerDueDate.getValue());
 
-        if (name.isEmpty() || description.isEmpty()|| choicePriority == null || choiceStatus == null) {
+        if (name.isEmpty() || description.isEmpty() || category.isEmpty() || choicePriority == null || choiceStatus == null || dueDate == null) {
             // Display the error label
             errorLabel.setVisible(true);
 
@@ -94,9 +98,8 @@ public class AddTaskController {
             event.consume();
         } else {
             TaskService taskService = new TaskService();
-            Date date = Date.valueOf(LocalDate.now().plusDays(1));
 
-            taskService.addTask(name, description, choiceStatus, date, choicePriority, 10, "random");
+            taskService.addTask(name, description, choiceStatus, dueDate, choicePriority, (int) (Math.random() * 25) + 1, category);
             clearAddTaskWindow();
 
             // Close the current stage
