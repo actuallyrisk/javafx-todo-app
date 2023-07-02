@@ -192,3 +192,86 @@
 .errorLabel {
     -fx-text-fill: rgb(255, 231, 0);
 }
+
+
+/**
+ * Date Picker
+ */
+.date-picker {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: rgb(75, 75, 75);
+    -fx-background-radius: 0;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: rgb(100, 100, 100);
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: rgb(255, 255, 255);
+}
+
+.date-picker .cell {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-border-color: rgb(55, 55, 55);
+}
+
+.date-picker .cell:hover {
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.date-picker .cell:focused {
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.date-picker .selected {
+    -fx-background-color: rgb(75, 75, 75);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.date-picker .selected:focused {
+    -fx-background-color: rgb(75, 75, 75);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.date-picker-popup {
+    -fx-background-color: rgb(55, 55, 55);
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.date-picker-popup .week-number-cell,
+.date-picker-popup .day-name-cell {
+    -fx-text-fill: rgb(182, 182, 182);
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: rgb(255, 255, 255);
+}
+
+.date-picker-popup .spinner .button:hover,
+.date-picker-popup .spinner .button:selected,
+.date-picker-popup .spinner .button:focused {
+    -fx-background-color: rgb(75, 75, 75);
+}
+
+.date-picker > .text-field {
+    -fx-background-color: rgb(55, 55, 55);
+    -fx-text-fill: rgb(255, 255, 255);
+}
+
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: rgb(55, 55, 55);
+}

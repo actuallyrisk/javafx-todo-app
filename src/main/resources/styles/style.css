@@ -230,3 +230,27 @@
     -fx-font-size: 12px;
     -fx-font-family: 'Roboto Regular', sans-serif;
 }
+
+
+/**
+ * Date Picker
+ */
+.date-picker .arrow-button:hover {
+    -fx-cursor: hand;
+}
+
+.date-picker .cell:hover {
+    -fx-cursor: hand;
+}
+
+.date-picker-popup .week-number-cell {
+    -fx-border-color: transparent;
+}
+
+.date-picker-popup .spinner .button:hover {
+    -fx-cursor: hand;
+}
+
+.date-picker-popup {
+    -fx-border-color: transparent;
+}
