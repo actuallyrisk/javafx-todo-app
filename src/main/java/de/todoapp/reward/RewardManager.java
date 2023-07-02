@@ -3,10 +3,19 @@ package de.todoapp.reward;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * The RewardManager class manages the rewards in the ToDo App.
+ * It keeps track of all available rewards and provides methods to retrieve gained rewards based on the points earned.
+ *
+ * @Author Anton Horn
+ */
 public class RewardManager {
 
     private ArrayList<BaseReward> allRewards;
 
+    /**
+     * Constructs a RewardManager object and initializes the list of all rewards.
+     */
     public RewardManager() {
         allRewards = new ArrayList<>();
         allRewards.add(RewardFactory.createReward("GoldenCup"));
@@ -29,20 +38,23 @@ public class RewardManager {
         allRewards.add(RewardFactory.createReward("GoalMasterTrophy"));
         allRewards.add(RewardFactory.createReward("ProductivityAward"));
         allRewards.add(RewardFactory.createReward("MotivationMedal"));
-        allRewards.add(RewardFactory.createReward("EnduranceAccolade"));
     }
 
-
+    /**
+     * Retrieves the list of gained rewards based on the points earned.
+     *
+     * @param points The total points earned.
+     * @return The list of gained rewards.
+     */
     public ArrayList<BaseReward> getGainedRewards(int points) {
         ArrayList<BaseReward> result = new ArrayList<>();
-        for (BaseReward reward: allRewards) {
-
+        for (BaseReward reward : allRewards) {
             if (reward.gainedReward(points)) {
                 result.add(reward);
             }
-
         }
         return result;
     }
 
 }
+
