@@ -156,5 +156,14 @@ public class TaskService {
         // Remove the task from the tasks list
         tasks.remove(task);
     }
+
+    public int getUserPoints() {
+        return Database.getPointsById(1);
+    }
+
+    public void addUserPoints(int points) {
+        Database.addPoints(1, points);
+    }
+
 }
 
