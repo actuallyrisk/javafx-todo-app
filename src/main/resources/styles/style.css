@@ -130,7 +130,7 @@
 /**
  * Buttons
  */
-.buttonAddTask, .buttonRemoveTask {
+.buttonAddTask, .buttonRemoveTask, .buttonFinishTask {
     -fx-cursor: hand;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -141,6 +141,10 @@
 }
 
 .buttonRemoveTask {
+    -fx-background-size: 14 15;
+}
+
+.buttonFinishTask {
     -fx-background-size: 14 15;
 }
 
@@ -253,4 +257,13 @@
 
 .date-picker-popup {
     -fx-border-color: transparent;
+}
+
+
+/**
+ * Button Tooltip
+ */
+.tooltip {
+    -fx-font-family: 'Roboto Regular', sans-serif;
+    -fx-font-size: 12px;
 }
