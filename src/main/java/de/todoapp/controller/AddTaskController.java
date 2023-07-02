@@ -99,7 +99,7 @@ public class AddTaskController {
         } else {
             TaskService taskService = new TaskService();
 
-            taskService.addTask(name, description, choiceStatus, dueDate, choicePriority, (int) (Math.random() * 25) + 1, category);
+            taskService.addTask(name, description, choiceStatus, dueDate, choicePriority,  (choicePriority.ordinal() + 1) * 5, category);
             clearAddTaskWindow();
 
             // Close the current stage
