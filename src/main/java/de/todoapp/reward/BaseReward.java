@@ -9,4 +9,12 @@ public abstract class BaseReward {
 
     public abstract boolean gainedReward(int points);
 
+    public final Image getImage() {
+        return image;
+    }
+
+    public final String getName() {
+        return name;
+    }
+
 }
