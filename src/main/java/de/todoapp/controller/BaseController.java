@@ -416,6 +416,31 @@ public class BaseController {
         }
     }
 
+    @FXML
+    public void finishTaskWithButton(ActionEvent event) {
+        Task selectedTask = tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedTask != null && selectedTask.getState() != State.COMPLETED) {
+            // Delete the selected task
+            taskService.deleteTask(selectedTask);
+
+            // Create a new task with the same values
+            taskService.addTask(selectedTask.getName(), selectedTask.getDescription(), State.COMPLETED, new java.sql.Date(selectedTask.getDueDate().getTime()), selectedTask.getPriority(), selectedTask.getPoints(), selectedTask.getCategory());
+
+            // Add the task points to the global points in the Database
+            taskService.addUserPoints(selectedTask.getPoints());
+
+            // Get the key of the previously active scene
+            String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
+
+            // Reload the scenes to reflect the updated task list
+            fxmlLoader.reload();
+
+            // Switch the scene back to the previously active scene
+            switchScene(key);
+        }
+    }
+
     /**
      * Sets the data in the table view with the provided list of tasks.
      *

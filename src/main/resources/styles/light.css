@@ -68,11 +68,11 @@
 /**
  * Buttons
  */
-.buttonAddTask, .buttonRemoveTask {
+.buttonAddTask, .buttonRemoveTask, .buttonFinishTask {
     -fx-background-color: rgb(240, 240, 240);
 }
 
-.buttonAddTask:hover, .buttonRemoveTask:hover {
+.buttonAddTask:hover, .buttonRemoveTask:hover, .buttonFinishTask:hover {
     -fx-background-color: rgb(220, 220, 220);
 }
 
@@ -82,6 +82,10 @@
 
 .buttonRemoveTask {
     -fx-background-image: url('../images/icons/light/trash-solid.png');
+}
+
+.buttonFinishTask {
+    -fx-background-image: url('../images/icons/light/check-solid.png');
 }
 
 
@@ -273,4 +277,21 @@
 
 .date-picker-popup > .calendar-grid {
     -fx-background-color: rgb(220, 220, 220);
+}
+
+
+/**
+ * Button Tooltip
+ */
+.tooltip {
+    -fx-background-color: rgb(230, 230, 230);
+    -fx-text-fill: rgb(45, 45, 45);
+}
+
+.tooltip .arrow {
+    -fx-background-color: rgb(230, 230, 230);
+}
+
+.tooltip .arrow-border {
+    -fx-background-color: rgb(230, 230, 230);
 }
