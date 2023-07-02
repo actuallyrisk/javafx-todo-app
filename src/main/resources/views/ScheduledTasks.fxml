@@ -84,7 +84,7 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="theme-switcher-text" text="." />
                     </children>
                 </HBox>
-                <Button layoutY="280.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Rewards" />
+                <Button layoutY="280.0" mnemonicParsing="false" onAction="#handleSwitchToSceneRewards" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Rewards"  />
             </children>
         </AnchorPane>
     </children>

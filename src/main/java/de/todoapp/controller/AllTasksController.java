@@ -136,7 +136,7 @@ public class AllTasksController extends BaseController {
     }
 
     @FXML
-    public void handleSwitchToSceneReward(ActionEvent event) {
+    public void handleSwitchToSceneRewards(ActionEvent event) {
         // Switch the scene to the "AllTasks" scene
         switchScene("Reward");
     }

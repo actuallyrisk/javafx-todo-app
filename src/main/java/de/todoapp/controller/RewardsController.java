@@ -18,7 +18,7 @@ public class RewardsController extends BaseController {
     @Override
     public void initialize() {
         super.initialize();
-
+        setReachedPoints();
     }
 
     /**
