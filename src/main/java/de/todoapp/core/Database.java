@@ -70,8 +70,26 @@ public class Database {
         preparedStatement = connection.prepareStatement(createTableSQL);
         preparedStatement.execute();
 
+        // Check if the points table is empty and insert a default entry if it is
+        String checkEmptyTableSQL = "SELECT COUNT(*) FROM points";
+        preparedStatement = connection.prepareStatement(checkEmptyTableSQL);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        int rowCount = resultSet.getInt(1);
+        preparedStatement.close();
+
+        if (rowCount == 0) {
+            // Insert a default entry with 0 points
+            String insertDefaultEntrySQL = "INSERT INTO points (points) VALUES (0)";
+            preparedStatement = connection.prepareStatement(insertDefaultEntrySQL);
+            preparedStatement.execute();
+            preparedStatement.close();
+
+            logger.info("Default points entry created successfully.");
+        }
+
         logger.info("Points table created successfully.");
     }
+
 
     public static synchronized void checkAndCreateTasksTable() throws SQLException {
         DatabaseMetaData metadata = connection.getMetaData();
