@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -82,6 +83,9 @@ public class BaseController {
     protected TaskService taskService = new TaskService();
 
     private Task taskToDelete = null;
+
+    @FXML
+    private Label displayPoints;
 
     /**
      * Protected constructor for the BaseController class.
@@ -452,5 +456,14 @@ public class BaseController {
 
         // Set the observable list as the data source for the table view
         tableView.setItems(data);
+    }
+
+    public void setReachedPoints(){
+
+        int points=taskService.getUserPoints();
+
+        if(points!=0){
+            displayPoints.setText(Integer.toString(points));
+        }
     }
 }

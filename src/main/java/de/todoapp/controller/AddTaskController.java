@@ -38,9 +38,6 @@ public class AddTaskController {
     private TextField textCategory;
 
     @FXML
-    private ChoiceBox<State> choiceBoxStatus;
-
-    @FXML
     private ChoiceBox<Priority> choiceBoxPriority;
 
     @FXML
@@ -53,8 +50,6 @@ public class AddTaskController {
      * Initialization logic for this controller.
      */
     public void initialize() {
-        ObservableList<State> state = FXCollections.observableArrayList(State.values());
-        choiceBoxStatus.setItems(state);
 
         ObservableList<Priority> priority = FXCollections.observableArrayList(Priority.values());
         choiceBoxPriority.setItems(priority);
@@ -86,7 +81,7 @@ public class AddTaskController {
         String name = textName.getText() == null ? "" : textName.getText();
         String description = textDescription.getText() == null ? "" : textDescription.getText();
         String category = textCategory.getText() == null ? "" : textCategory.getText();
-        State choiceStatus = choiceBoxStatus.getValue();
+        State choiceStatus = State.IN_PROGRESS;
         Priority choicePriority = choiceBoxPriority.getValue();
         Date dueDate = datePickerDueDate.getValue() == null ? null : Date.valueOf(datePickerDueDate.getValue());
 
@@ -136,8 +131,5 @@ public class AddTaskController {
 
         // Reset the selected priority value
         choiceBoxPriority.setValue(null);
-
-        // Reset the selected status value
-        choiceBoxStatus.setValue(null);
     }
 }

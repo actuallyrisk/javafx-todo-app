@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.TodayTasksController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.TodayTasksController">
    <children>
       <AnchorPane layoutX="250.0" prefHeight="560.0" prefWidth="610.0">
          <children>
@@ -84,6 +84,8 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="theme-switcher-text" text="." />
                </children>
             </HBox>
+            <Label layoutX="56.0" layoutY="461.0" text="Points:" styleClass="nav-button"/>
+            <Label layoutX="140.0" layoutY="461.0" text="0" fx:id="displayPoints" styleClass="nav-button"/>
          </children>
       </AnchorPane>
    </children>

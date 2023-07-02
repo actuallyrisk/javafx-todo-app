@@ -84,6 +84,8 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="theme-switcher-text" text="." />
                     </children>
                 </HBox>
+                <Label layoutX="56.0" layoutY="461.0" text="Points:" styleClass="nav-button"/>
+                <Label layoutX="140.0" layoutY="461.0" text="0" fx:id="displayPoints" styleClass="nav-button"/>
             </children>
         </AnchorPane>
     </children>
