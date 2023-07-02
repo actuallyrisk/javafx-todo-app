@@ -12,7 +12,7 @@ public class Database {
     private static Connection connection;
     private static PreparedStatement preparedStatement;
 
-    public static synchronized void createDatabase() {
+    public static synchronized void createDatabaseAndTables() {
         try {
             // Check if the todo.sqlite file exists
             File dbFile = new File("todo.sqlite");
@@ -21,54 +21,22 @@ public class Database {
             // Connect to the database
             connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
 
+            // If the database file did not exist, create the Tasks and Points tables
             if (isNewDatabase) {
                 // Create the tasks table
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
-                        "id INTEGER PRIMARY KEY," +
-                        "name TEXT NOT NULL," +
-                        "description TEXT," +
-                        "state INTEGER NOT NULL," +
-                        "due_date DATE NOT NULL," +
-                        "priority INTEGER NOT NULL," +
-                        "points INTEGER NOT NULL," +
-                        "category TEXT" +
-                        ")";
-                preparedStatement = connection.prepareStatement(createTableSQL);
-                preparedStatement.execute();
+                createTasksTable();
 
-                logger.info("Database created successfully.");
+                // Create the points table
+                createPointsTable();
             } else {
                 // Check if the tasks table exists
-                DatabaseMetaData metadata = connection.getMetaData();
-                ResultSet tables = metadata.getTables(null, null, "tasks", null);
-                boolean isTasksTableExists = tables.next();
-                tables.close();
+                checkAndCreateTasksTable();
 
-                if (!isTasksTableExists) {
-                    // Create the tasks table if it doesn't exist
-                    String createTableSQL = "CREATE TABLE tasks (" +
-                            "id INTEGER PRIMARY KEY," +
-                            "name TEXT NOT NULL," +
-                            "description TEXT," +
-                            "state INTEGER NOT NULL," +
-                            "due_date DATE NOT NULL," +
-                            "priority INTEGER NOT NULL," +
-                            "points INTEGER NOT NULL," +
-                            "category TEXT" +
-                            ")";
-                    preparedStatement = connection.prepareStatement(createTableSQL);
-                    preparedStatement.execute();
-
-                    logger.info("Tasks table created successfully.");
-                } else {
-                    logger.info("Database already exists.");
-                }
+                // Check if the points table exists
+                checkAndCreatePointsTable();
             }
 
-            // Close the prepared statement and connection
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
+            // Close the connection
             if (connection != null) {
                 connection.close();
             }
@@ -77,7 +45,131 @@ public class Database {
         }
     }
 
+    public static synchronized void createTasksTable() throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
+                "id INTEGER PRIMARY KEY," +
+                "name TEXT NOT NULL," +
+                "description TEXT," +
+                "state INTEGER NOT NULL," +
+                "due_date DATE NOT NULL," +
+                "priority INTEGER NOT NULL," +
+                "points INTEGER NOT NULL," +
+                "category TEXT" +
+                ")";
+        preparedStatement = connection.prepareStatement(createTableSQL);
+        preparedStatement.execute();
 
+        logger.info("Tasks table created successfully.");
+    }
+
+    public static synchronized void createPointsTable() throws SQLException {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS points (" +
+                "id INTEGER PRIMARY KEY," +
+                "points NUMBER NOT NULL" +
+                ")";
+        preparedStatement = connection.prepareStatement(createTableSQL);
+        preparedStatement.execute();
+
+        logger.info("Points table created successfully.");
+    }
+
+    public static synchronized void checkAndCreateTasksTable() throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        ResultSet tables = metadata.getTables(null, null, "tasks", null);
+        boolean isTasksTableExists = tables.next();
+        tables.close();
+
+        if (!isTasksTableExists) {
+            // Create the tasks table if it doesn't exist
+            createTasksTable();
+        }
+    }
+
+    public static synchronized void checkAndCreatePointsTable() throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        ResultSet tables = metadata.getTables(null, null, "points", null);
+        boolean isPointsTableExists = tables.next();
+        tables.close();
+
+        if (!isPointsTableExists) {
+            // Create the points table if it doesn't exist
+            createPointsTable();
+        }
+    }
+
+    public static void addPoints(int id, int points) {
+        try {
+            // Connect to the database
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+
+            // Update the points for the given ID
+            String updateSQL = "UPDATE points SET points = points + ? WHERE id = ?";
+            preparedStatement = connection.prepareStatement(updateSQL);
+            preparedStatement.setInt(1, points);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+
+            // Close the prepared statement and connection
+            preparedStatement.close();
+            connection.close();
+
+            logger.info("Points added successfully.");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public static void subtractPoints(int id, int points) {
+        try {
+            // Connect to the database
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+
+            // Subtract the points for the given ID
+            String updateSQL = "UPDATE points SET points = points - ? WHERE id = ?";
+            preparedStatement = connection.prepareStatement(updateSQL);
+            preparedStatement.setInt(1, points);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+
+            // Close the prepared statement and connection
+            preparedStatement.close();
+            connection.close();
+
+            logger.info("Points subtracted successfully.");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+
+    public static int getPointsById(int id) {
+        int points = 0;
+        try {
+            // Connect to the database
+            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+
+            // Retrieve the points with the specified ID from the database
+            String selectSQL = "SELECT points FROM points WHERE id = ?";
+            preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Get the points value
+            if (resultSet.next()) {
+                points = resultSet.getInt("points");
+            }
+
+            // Close the result set, prepared statement, and connection
+            resultSet.close();
+            preparedStatement.close();
+            connection.close();
+
+            logger.info("Points retrieved successfully.");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return points;
+    }
 
     public static int addTask(String name, String description, int state, String dueDate, int priority, int points, String category) {
         int taskId = -1;
