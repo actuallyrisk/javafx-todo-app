@@ -267,3 +267,22 @@
     -fx-font-family: 'Roboto Regular', sans-serif;
     -fx-font-size: 12px;
 }
+
+.reward-image {
+    -fx-opacity: .1;
+}
+
+.reward-text {
+    -fx-opacity: .75;
+    -fx-font-family: 'Roboto Regular', sans-serif;
+}
+
+.reward-h1 {
+    -fx-font-family: 'Minecraft Regular', fantasy;
+    -fx-font-size: 14px;
+}
+
+.reward-p {
+    -fx-font-family: 'Roboto Regular', sans-serif;
+    -fx-font-size: 12px;
+}

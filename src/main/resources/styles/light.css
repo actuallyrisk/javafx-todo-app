@@ -295,3 +295,11 @@
 .tooltip .arrow-border {
     -fx-background-color: rgb(230, 230, 230);
 }
+
+.reward-text {
+    -fx-text-fill: rgb(45, 45, 45);
+}
+
+.reward-h1, .reward-p {
+    -fx-text-fill: rgb(45, 45, 45);
+}

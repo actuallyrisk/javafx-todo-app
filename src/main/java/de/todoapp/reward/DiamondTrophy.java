@@ -1,12 +1,9 @@
 package de.todoapp.reward;
 
-import javafx.scene.image.Image;
-
 public class DiamondTrophy extends BaseReward {
 
     public DiamondTrophy() {
-        image = new Image("images/rewards/DiamondTrophy.png");
-        name = "Diamond Trophy";
+        id = "diamondTrophy";
     }
 
     @Override

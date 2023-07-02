@@ -1,12 +1,9 @@
 package de.todoapp.reward;
 
-import javafx.scene.image.Image;
-
 public class ChampionTrophy extends BaseReward {
 
     public ChampionTrophy() {
-        image = new Image("images/rewards/ChampionTrophy.png");
-        name = "Champion Trophy";
+        id = "championTrophy";
     }
 
     @Override

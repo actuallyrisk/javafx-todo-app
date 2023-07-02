@@ -1,12 +1,9 @@
 package de.todoapp.reward;
 
-import javafx.scene.image.Image;
-
 public class AchievementLaurel extends BaseReward {
 
     public AchievementLaurel() {
-        image = new Image("images/rewards/AchievementLaurel.png");
-        name = "Achievement Laurel";
+        id = "achievementLaurel";
     }
 
     @Override

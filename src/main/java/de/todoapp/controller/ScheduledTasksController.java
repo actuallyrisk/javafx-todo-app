@@ -138,7 +138,7 @@ public class ScheduledTasksController extends BaseController {
     @FXML
     public void handleSwitchToSceneRewards(ActionEvent event) {
         // Switch the scene to the "AllTasks" scene
-        switchScene("Reward");
+        switchScene("Rewards");
     }
 
     /**

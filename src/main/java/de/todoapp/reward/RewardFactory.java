@@ -1,11 +1,8 @@
 package de.todoapp.reward;
 
-import de.todoapp.core.Main;
-import javafx.scene.image.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 
 /**
  * The RewardFactory class is responsible for creating reward objects based on the given reward name.

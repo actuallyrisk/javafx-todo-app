@@ -1,12 +1,9 @@
 package de.todoapp.reward;
 
-import javafx.scene.image.Image;
-
 public class ProductivityAward extends BaseReward {
 
     public ProductivityAward() {
-        image = new Image("images/rewards/ProductivityAward.png");
-        name = "Productivity Award";
+        id = "productivityAward";
     }
 
     @Override
