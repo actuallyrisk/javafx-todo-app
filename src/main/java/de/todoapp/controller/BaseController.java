@@ -427,6 +427,9 @@ public class BaseController {
             // Create a new task with the same values
             taskService.addTask(selectedTask.getName(), selectedTask.getDescription(), State.COMPLETED, new java.sql.Date(selectedTask.getDueDate().getTime()), selectedTask.getPriority(), selectedTask.getPoints(), selectedTask.getCategory());
 
+            // Add the task points to the global points in the Database
+            taskService.addUserPoints(selectedTask.getPoints());
+
             // Get the key of the previously active scene
             String key = MapUtils.getKeyByValue(SCENE_STORAGE, ((Node) event.getSource()).getScene());
 
