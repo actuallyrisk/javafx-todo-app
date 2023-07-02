@@ -67,7 +67,7 @@
                     </content>
                 </ScrollPane>
             </children></AnchorPane>
-        <AnchorPane prefHeight="560.0" prefWidth="200.0" styleClass="sidebar">
+        <AnchorPane maxHeight="560.0" maxWidth="250.0" minHeight="560.0" minWidth="250.0" prefHeight="560.0" prefWidth="250.0" styleClass="sidebar">
             <children>
                 <Button layoutY="72.0" mnemonicParsing="false" onAction="#handleSwitchToSceneTodayButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Today" />
                 <Button layoutY="117.0" mnemonicParsing="false" onAction="#handleSwitchToSceneScheduledButton" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Scheduled" />
@@ -84,8 +84,7 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="theme-switcher-text" text="." />
                     </children>
                 </HBox>
-                <Label layoutX="56.0" layoutY="461.0" text="Points:" styleClass="nav-button"/>
-                <Label layoutX="140.0" layoutY="461.0" text="0" fx:id="displayPoints" styleClass="nav-button"/>
+                <Button layoutY="280.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="nav-button" text="Rewards" />
             </children>
         </AnchorPane>
     </children>
