@@ -7,26 +7,26 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="510.0" maxWidth="300.0" minHeight="510.0" minWidth="300.0" prefHeight="510.0" prefWidth="300.0" styleClass="main" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.AddTaskController">
+<AnchorPane maxHeight="510.0" maxWidth="300.0" minHeight="428.0" minWidth="300.0" prefHeight="428.0" prefWidth="300.0" styleClass="main" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.todoapp.controller.AddTaskController">
    <children>
-      <Label layoutX="90.0" layoutY="24.0" styleClass="add-task-h1" text="Add a new task" />
+      <Label layoutX="91.0" layoutY="20.0" styleClass="add-task-h1" text="Add a new task" />
 
-      <Label layoutX="15.0" layoutY="52.0" styleClass="add-task-p" text="Name" />
-      <TextField fx:id="textName" layoutX="15.0" layoutY="72.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
+      <Label layoutX="16.0" layoutY="48.0" styleClass="add-task-p" text="Name" />
+      <TextField fx:id="textName" layoutX="16.0" layoutY="68.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
 
-      <Label layoutX="15.0" layoutY="112.0" styleClass="add-task-p" text="Description" />
-      <TextField fx:id="textDescription" layoutX="15.0" layoutY="132.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
-      <Label layoutX="15.0" layoutY="172.0" styleClass="add-task-p" text="Category" />
-      <TextField fx:id="textCategory" layoutX="15.0" layoutY="192.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
+      <Label layoutX="16.0" layoutY="108.0" styleClass="add-task-p" text="Description" />
+      <TextField fx:id="textDescription" layoutX="16.0" layoutY="128.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
+      <Label layoutX="16.0" layoutY="168.0" styleClass="add-task-p" text="Category" />
+      <TextField fx:id="textCategory" layoutX="16.0" layoutY="188.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-text" />
 
-      <Label layoutX="15.0" layoutY="232.0" styleClass="add-task-p" text="Priority" />
-      <ChoiceBox fx:id="choiceBoxPriority" layoutX="15.0" layoutY="252.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-choice" />
-      <Label layoutX="15.0" layoutY="352.0" styleClass="add-task-p" text="Due at" />
-      <DatePicker fx:id="datePickerDueDate" layoutX="15.0" layoutY="372.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" />
+      <Label layoutX="16.0" layoutY="228.0" styleClass="add-task-p" text="Priority" />
+      <ChoiceBox fx:id="choiceBoxPriority" layoutX="16.0" layoutY="248.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" styleClass="add-task-choice" />
+      <Label layoutX="17.0" layoutY="288.0" styleClass="add-task-p" text="Due at" />
+      <DatePicker fx:id="datePickerDueDate" layoutX="16.0" layoutY="308.0" maxHeight="25.0" maxWidth="270.0" minHeight="25.0" minWidth="270.0" prefHeight="25.0" prefWidth="270.0" />
 
-      <Label fx:id="errorLabel" layoutX="15.0" layoutY="430.0" styleClass="errorLabel" text="Please fill in all fields" />
+      <Label fx:id="errorLabel" layoutX="15.0" layoutY="353.0" styleClass="errorLabel" text="Please fill in all fields" />
 
-      <Button layoutX="15.0" layoutY="460.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="125.0" styleClass="add-task-cancel" text="Cancel" />
-      <Button layoutX="160.0" layoutY="460.0" mnemonicParsing="false" onAction="#finish" prefWidth="125.0" styleClass="add-task-save" text="Save" />
+      <Button layoutX="15.0" layoutY="383.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="125.0" styleClass="add-task-cancel" text="Cancel" />
+      <Button layoutX="160.0" layoutY="383.0" mnemonicParsing="false" onAction="#finish" prefWidth="125.0" styleClass="add-task-save" text="Save" />
    </children>
 </AnchorPane>

@@ -81,11 +81,13 @@ public class AddTaskController {
         String name = textName.getText() == null ? "" : textName.getText();
         String description = textDescription.getText() == null ? "" : textDescription.getText();
         String category = textCategory.getText() == null ? "" : textCategory.getText();
+
+        //Important to set the default status on "in_progress"
         State choiceStatus = State.IN_PROGRESS;
         Priority choicePriority = choiceBoxPriority.getValue();
         Date dueDate = datePickerDueDate.getValue() == null ? null : Date.valueOf(datePickerDueDate.getValue());
 
-        if (name.isEmpty() || description.isEmpty() || category.isEmpty() || choicePriority == null || choiceStatus == null || dueDate == null) {
+        if (name.isEmpty() || description.isEmpty() || category.isEmpty() || choicePriority == null || dueDate == null) {
             // Display the error label
             errorLabel.setVisible(true);
 

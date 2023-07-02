@@ -67,7 +67,7 @@ public class FXMLLoader {
 
                 // With the "AddTask.fxml" file will be a deviating scene created, with a different size compared to the other scenes
                 if (fxmlFile.equals("AddTask.fxml")) {
-                    baseController.putScene(getKeyFromFileName(fxmlFile), new Scene(root, 300, 510));
+                    baseController.putScene(getKeyFromFileName(fxmlFile), new Scene(root, 300, 428));
                 } else {
                     // Set the scene with the root component and the specified width and height
                     baseController.putScene(getKeyFromFileName(fxmlFile), new Scene(root, appConfig.getWidth(), appConfig.getHeight()));
