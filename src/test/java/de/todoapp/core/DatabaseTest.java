@@ -3,10 +3,7 @@ package de.todoapp.core;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DatabaseTest {
 
@@ -15,25 +12,7 @@ public class DatabaseTest {
     @BeforeEach
     public void setup() {
         // Create a new test database
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + TEST_DB_NAME);
-            Statement statement = connection.createStatement();
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
-                    "id INTEGER PRIMARY KEY," +
-                    "name TEXT NOT NULL," +
-                    "description TEXT," +
-                    "state INTEGER NOT NULL," +
-                    "due_date DATE NOT NULL," +
-                    "priority INTEGER NOT NULL," +
-                    "points INTEGER NOT NULL," +
-                    "category TEXT" +
-                    ")";
-            statement.execute(createTableSQL);
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println("Failed to create the test database.");
-        }
+        Database.createDatabase(TEST_DB_NAME);
     }
 
     @Test

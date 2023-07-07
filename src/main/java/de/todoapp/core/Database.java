@@ -71,8 +71,9 @@ public class Database {
                 "points INTEGER NOT NULL," +
                 "category TEXT" +
                 ")";
-        preparedStatement = connection.prepareStatement(createTableSQL);
-        preparedStatement.execute();
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(createTableSQL);
+        statement.close();
     }
 
     private static void createPointsTable() throws SQLException {
@@ -80,8 +81,9 @@ public class Database {
                 "id INTEGER PRIMARY KEY," +
                 "points NUMBER NOT NULL" +
                 ")";
-        preparedStatement = connection.prepareStatement(createTableSQL);
-        preparedStatement.execute();
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(createTableSQL);
+        statement.close();
 
         // Check if the points table is empty and insert a default entry if it is
         String checkEmptyTableSQL = "SELECT COUNT(*) FROM points";
@@ -93,9 +95,9 @@ public class Database {
         if (rowCount == 0) {
             // Insert a default entry with 0 points
             String insertDefaultEntrySQL = "INSERT INTO points (points) VALUES (0)";
-            preparedStatement = connection.prepareStatement(insertDefaultEntrySQL);
-            preparedStatement.execute();
-            preparedStatement.close();
+            statement = connection.createStatement();
+            statement.executeUpdate(insertDefaultEntrySQL);
+            statement.close();
 
             logger.info("Default points entry created successfully.");
         }
