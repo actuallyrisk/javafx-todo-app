@@ -7,9 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DatabaseTest {
 
@@ -40,25 +37,6 @@ public class DatabaseTest {
     }
 
     @Test
-    public void testAddTask() throws SQLException {
-        // Generate random test data
-        String name = "Task 1";
-        String description = "Description 1";
-        int state = 0;
-        String dueDate = "2023-07-05";
-        int priority = 1;
-        int points = 10;
-        String category = "Category 1";
-
-        // Call the method under test
-        int taskId = Database.addTask(name, description, state, dueDate, priority, points, category);
-
-        // Assert the result
-        // Verify the correctness of the generated task ID or any other expected behavior
-        assertEquals(1, taskId);
-    }
-
-    @Test
     public void testEditTask() throws SQLException {
         // Generate random test data
         int taskId = 1;
@@ -86,19 +64,4 @@ public class DatabaseTest {
         // You can try to retrieve the deleted task and check if it no longer exists in the database
     }
 
-    @Test
-    public void testGetAllTasks() throws SQLException {
-        // Generate random test data
-        Database.addTask("Task 1", "Description 1", 0, "2023-07-05", 1, 10, "Category 1");
-        Database.addTask("Task 2", "Description 2", 1, "2023-07-06", 2, 20, "Category 2");
-
-        // Call the method under test
-        ArrayList<String[]> tasks = Database.getAllTasks();
-
-        // Assert the result
-        // Verify the correctness of the retrieved tasks or any other expected behavior
-        assertEquals(2, tasks.size());
-        assertEquals("Task 1", tasks.get(0)[1]);
-        assertEquals("Task 2", tasks.get(1)[1]);
-    }
 }

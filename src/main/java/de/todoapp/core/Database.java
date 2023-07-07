@@ -11,67 +11,47 @@ public class Database {
     private static final Logger logger = LogManager.getLogger(Database.class);
     private static Connection connection;
     private static PreparedStatement preparedStatement;
-    private static String databaseName;
+    private static String dbName;
 
     public static synchronized void createDatabase(String dbName) {
+        Database.dbName = dbName;
         try {
-            databaseName = dbName;
-
             // Check if the database file exists
-            File dbFile = new File(databaseName);
+            File dbFile = new File(dbName + ".db");
             boolean isNewDatabase = !dbFile.exists();
 
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             if (isNewDatabase) {
                 // Create the tasks table
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
-                        "id INTEGER PRIMARY KEY," +
-                        "name TEXT NOT NULL," +
-                        "description TEXT," +
-                        "state INTEGER NOT NULL," +
-                        "due_date DATE NOT NULL," +
-                        "priority INTEGER NOT NULL," +
-                        "points INTEGER NOT NULL," +
-                        "category TEXT" +
-                        ")";
-                preparedStatement = connection.prepareStatement(createTableSQL);
-                preparedStatement.execute();
+                createTasksTable();
+
+                // Create the points table
+                createPointsTable();
 
                 logger.info("Database created successfully.");
             } else {
                 // Check if the tasks table exists
-                DatabaseMetaData metadata = connection.getMetaData();
-                ResultSet tables = metadata.getTables(null, null, "tasks", null);
-                boolean isTasksTableExists = tables.next();
-                tables.close();
-
-                if (!isTasksTableExists) {
+                if (!isTableExists("tasks")) {
                     // Create the tasks table if it doesn't exist
-                    String createTableSQL = "CREATE TABLE tasks (" +
-                            "id INTEGER PRIMARY KEY," +
-                            "name TEXT NOT NULL," +
-                            "description TEXT," +
-                            "state INTEGER NOT NULL," +
-                            "due_date DATE NOT NULL," +
-                            "priority INTEGER NOT NULL," +
-                            "points INTEGER NOT NULL," +
-                            "category TEXT" +
-                            ")";
-                    preparedStatement = connection.prepareStatement(createTableSQL);
-                    preparedStatement.execute();
+                    createTasksTable();
 
                     logger.info("Tasks table created successfully.");
+                }
+
+                // Check if the points table exists
+                if (!isTableExists("points")) {
+                    // Create the points table if it doesn't exist
+                    createPointsTable();
+
+                    logger.info("Points table created successfully.");
                 } else {
                     logger.info("Database already exists.");
                 }
             }
 
-            // Close the prepared statement and connection
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
+            // Close the connection
             if (connection != null) {
                 connection.close();
             }
@@ -80,7 +60,7 @@ public class Database {
         }
     }
 
-    public static synchronized void createTasksTable() throws SQLException {
+    private static void createTasksTable() throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
                 "id INTEGER PRIMARY KEY," +
                 "name TEXT NOT NULL," +
@@ -93,11 +73,9 @@ public class Database {
                 ")";
         preparedStatement = connection.prepareStatement(createTableSQL);
         preparedStatement.execute();
-
-        logger.info("Tasks table created successfully.");
     }
 
-    public static synchronized void createPointsTable() throws SQLException {
+    private static void createPointsTable() throws SQLException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS points (" +
                 "id INTEGER PRIMARY KEY," +
                 "points NUMBER NOT NULL" +
@@ -121,39 +99,68 @@ public class Database {
 
             logger.info("Default points entry created successfully.");
         }
-
-        logger.info("Points table created successfully.");
     }
 
+    private static boolean isTableExists(String tableName) throws SQLException {
+        DatabaseMetaData metadata = connection.getMetaData();
+        ResultSet tables = metadata.getTables(null, null, tableName, null);
+        boolean isTableExists = tables.next();
+        tables.close();
+        return isTableExists;
+    }
 
     public static synchronized void checkAndCreateTasksTable() throws SQLException {
-        DatabaseMetaData metadata = connection.getMetaData();
-        ResultSet tables = metadata.getTables(null, null, "tasks", null);
-        boolean isTasksTableExists = tables.next();
-        tables.close();
+        try {
+            // Connect to the database
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
-        if (!isTasksTableExists) {
-            // Create the tasks table if it doesn't exist
-            createTasksTable();
+            DatabaseMetaData metadata = connection.getMetaData();
+            ResultSet tables = metadata.getTables(null, null, "tasks", null);
+            boolean isTasksTableExists = tables.next();
+            tables.close();
+
+            if (!isTasksTableExists) {
+                createTasksTable();
+            }
+
+            // Close the connection
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw e;
         }
     }
 
     public static synchronized void checkAndCreatePointsTable() throws SQLException {
-        DatabaseMetaData metadata = connection.getMetaData();
-        ResultSet tables = metadata.getTables(null, null, "points", null);
-        boolean isPointsTableExists = tables.next();
-        tables.close();
+        try {
+            // Connect to the database
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
-        if (!isPointsTableExists) {
-            // Create the points table if it doesn't exist
-            createPointsTable();
+            DatabaseMetaData metadata = connection.getMetaData();
+            ResultSet tables = metadata.getTables(null, null, "points", null);
+            boolean isPointsTableExists = tables.next();
+            tables.close();
+
+            if (!isPointsTableExists) {
+                createPointsTable();
+            }
+
+            // Close the connection
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw e;
         }
     }
 
     public static void addPoints(int id, int points) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Update the points for the given ID
             String updateSQL = "UPDATE points SET points = points + ? WHERE id = ?";
@@ -163,8 +170,12 @@ public class Database {
             preparedStatement.executeUpdate();
 
             // Close the prepared statement and connection
-            preparedStatement.close();
-            connection.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
 
             logger.info("Points added successfully.");
         } catch (SQLException e) {
@@ -175,9 +186,9 @@ public class Database {
     public static void subtractPoints(int id, int points) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
-            // Subtract the points for the given ID
+            // Update the points for the given ID
             String updateSQL = "UPDATE points SET points = points - ? WHERE id = ?";
             preparedStatement = connection.prepareStatement(updateSQL);
             preparedStatement.setInt(1, points);
@@ -185,8 +196,12 @@ public class Database {
             preparedStatement.executeUpdate();
 
             // Close the prepared statement and connection
-            preparedStatement.close();
-            connection.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
 
             logger.info("Points subtracted successfully.");
         } catch (SQLException e) {
@@ -194,12 +209,11 @@ public class Database {
         }
     }
 
-
     public static int getPointsById(int id) {
         int points = 0;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Retrieve the points with the specified ID from the database
             String selectSQL = "SELECT points FROM points WHERE id = ?";
@@ -228,7 +242,7 @@ public class Database {
         int taskId = -1;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Insert a new task into the database
             String insertSQL = "INSERT INTO tasks (name, description, state, due_date, priority, points, category) " +
@@ -252,8 +266,12 @@ public class Database {
             }
 
             // Close the prepared statement and connection
-            preparedStatement.close();
-            connection.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
 
             logger.info("Task added successfully.");
         } catch (SQLException e) {
@@ -265,7 +283,7 @@ public class Database {
     public static void editTask(int id, String column, String value) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Update an existing task in the database
             String updateSQL = "UPDATE tasks SET " + column + " = ? WHERE id = ?";
@@ -275,8 +293,12 @@ public class Database {
             preparedStatement.executeUpdate();
 
             // Close the prepared statement and connection
-            preparedStatement.close();
-            connection.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
 
             logger.info("Task updated successfully.");
         } catch (SQLException e) {
@@ -287,7 +309,7 @@ public class Database {
     public static void deleteTask(int id) {
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Delete an existing task from the database
             String deleteSQL = "DELETE FROM tasks WHERE id = ?";
@@ -296,8 +318,12 @@ public class Database {
             preparedStatement.executeUpdate();
 
             // Close the prepared statement and connection
-            preparedStatement.close();
-            connection.close();
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
 
             logger.info("Task deleted successfully.");
         } catch (SQLException e) {
@@ -309,7 +335,7 @@ public class Database {
         ArrayList<String[]> result = null;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Retrieve all tasks from the database
             String selectSQL = "SELECT * FROM tasks";
@@ -352,7 +378,7 @@ public class Database {
         String[] task = null;
         try {
             // Connect to the database
-            connection = DriverManager.getConnection("jdbc:sqlite:todo.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dbName + ".db");
 
             // Retrieve the task with the specified ID from the database
             String selectSQL = "SELECT * FROM tasks WHERE id = ?";
@@ -361,13 +387,16 @@ public class Database {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             // Fill the array with the task
-            task = new String[5];
+            task = new String[8];
             if (resultSet.next()) {
                 task[0] = Integer.toString(resultSet.getInt("id"));
                 task[1] = resultSet.getString("name");
-                task[2] = resultSet.getString("due_date");
-                task[3] = Integer.toString(resultSet.getInt("importance"));
-                task[4] = Integer.toString(resultSet.getInt("finished"));
+                task[2] = resultSet.getString("description");
+                task[3] = Integer.toString(resultSet.getInt("state"));
+                task[4] = resultSet.getString("due_date");
+                task[5] = Integer.toString(resultSet.getInt("priority"));
+                task[6] = Integer.toString(resultSet.getInt("points"));
+                task[7] = resultSet.getString("category");
             }
 
             // Close the result set, prepared statement, and connection
